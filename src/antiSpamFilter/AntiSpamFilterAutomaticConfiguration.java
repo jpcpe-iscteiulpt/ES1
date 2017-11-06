@@ -21,11 +21,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 public class AntiSpamFilterAutomaticConfiguration {
   private static final int INDEPENDENT_RUNS = 5 ;
+  
 
   public static void main(String[] args) throws IOException {
-    String experimentBaseDirectory = "experimentBaseDirectory";
+	  
+	FileManager fm = new FileManager();
+	
+	JFrame testFrame = new JFrame();
+	
+//  String experimentBaseDirectory = "experimentBaseDirectory";
+    String experimentBaseDirectory = fm.BaseDirectoryPrompt(testFrame);
+    
+//  alterar para ser chamado pelo user usando a GUI
+    fm.FileFolderPrompt(testFrame);
 
     List<ExperimentProblem<DoubleSolution>> problemList = new ArrayList<>();
     problemList.add(new ExperimentProblem<>(new AntiSpamFilterProblem()));
