@@ -30,15 +30,17 @@ public class AntiSpamFilterAutomaticConfiguration {
 
   public static void main(String[] args) throws IOException {
 	  
+	
 	FileManager fm = new FileManager();
 	
-	JFrame testFrame = new JFrame();
+	GUI gui = new GUI();
+	gui.getFrmFiltroAntispam().setVisible(true);
 	
 //  String experimentBaseDirectory = "experimentBaseDirectory";
-    String experimentBaseDirectory = fm.BaseDirectoryPrompt(testFrame);
+    String experimentBaseDirectory = fm.BaseDirectoryPrompt(gui.getFrmFiltroAntispam());
     
 //  alterar para ser chamado pelo user usando a GUI
-    fm.FileFolderPrompt(testFrame);
+    fm.FileFolderPrompt(gui.getFrmFiltroAntispam());
 
     List<ExperimentProblem<DoubleSolution>> problemList = new ArrayList<>();
     problemList.add(new ExperimentProblem<>(new AntiSpamFilterProblem()));
