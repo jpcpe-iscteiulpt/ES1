@@ -5,10 +5,13 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoSetAndFrontFromDoubleSolutions;
 
 public class FileManager {
 
@@ -20,7 +23,7 @@ public class FileManager {
 	private ArrayList<String> ham;
 	private ArrayList<String> spam;
 	private ArrayList<String> rules;
-
+	
 	public FileManager() {
 
 	}
@@ -129,6 +132,24 @@ public class FileManager {
 			System.out.println("Ficheiro " + file.getAbsolutePath() + " não seleccionado ou inexistente. ");
 		}
 		return null;
+	}
+	
+	/**
+	 * Cria um vetor de números aleatórios do tipo double num intervalo de [-5,5]
+	 * 
+	 */
+	private ArrayList<String> generateRandomWeights(){
+		
+		ArrayList<String> randomWeights = new ArrayList<String>();
+
+		Random randomNumberGenerator = new Random();
+		
+		for(int i = 0; i < 335; i++) {
+			randomWeights.add(new Double(-5.0 + (5.0 - (-5.0)) * randomNumberGenerator.nextDouble()).toString());
+		
+		}
+		
+		return randomWeights;
 	}
 
 }
