@@ -201,11 +201,11 @@ public class GUI {
 		panel3.add(lblConfiguraoManual1);
 		
 		JLabel lblFalsosPositivos = new JLabel("Falsos Positivos");
-		lblFalsosPositivos.setBounds(60, 229, 75, 14);
+		lblFalsosPositivos.setBounds(50, 229, 120, 14);
 		panel3.add(lblFalsosPositivos);
 		
 		JLabel lblFalsosNegativos = new JLabel("Falsos Negativos");
-		lblFalsosNegativos.setBounds(240, 229, 81, 14);
+		lblFalsosNegativos.setBounds(230, 229, 120, 14);
 		panel3.add(lblFalsosNegativos);
 		
 		textField = new JTextField();
@@ -239,11 +239,11 @@ public class GUI {
 		panel4.add(lblConfiguraoAutomtica1);
 		
 		JLabel label_1 = new JLabel("Falsos Positivos");
-		label_1.setBounds(56, 219, 75, 14);
+		label_1.setBounds(45, 219, 120, 14);
 		panel4.add(label_1);
 		
 		JLabel label_2 = new JLabel("Falsos Negativos");
-		label_2.setBounds(236, 219, 81, 14);
+		label_2.setBounds(225, 219, 120, 14);
 		panel4.add(label_2);
 		
 		textField = new JTextField();
