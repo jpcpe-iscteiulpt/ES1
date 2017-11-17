@@ -1,12 +1,13 @@
 Identificação da turma
 METIA
 
-Identificação do grupo 
+Identificação do grupo
 55
 
 Identificação do número, nome e papel de cada membro do grupo
-Jo�o Lopes		64795	SCRUM Master
-Jo�o Ponte		73718	Developer
+
+João Lopes		64795	SCRUM Master
+João Ponte		73718	Developer
 Rui Dias		69135	Developer
 Sara Ferreira	69962	Quality Manager
 

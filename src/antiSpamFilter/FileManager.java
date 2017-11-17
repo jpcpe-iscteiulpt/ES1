@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,6 +15,8 @@ public class FileManager {
 
 	private ArrayList<String> lines;
 	private String executionPath;
+	
+	JFileChooser chooser = new JFileChooser();
 
 	private File[] files;
 
@@ -22,8 +25,9 @@ public class FileManager {
 	private ArrayList<String> rules;
 
 	public FileManager() {
-
 	}
+
+	
 
 	/**
 	 * Cria um prompt para o user indicar onde quer guardar os resultados, o
@@ -35,7 +39,6 @@ public class FileManager {
 	 * @return Pasta a usar para experimentBaseDirectory.
 	 */
 	public String BaseDirectoryPrompt(Component parent) {
-		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
@@ -44,6 +47,7 @@ public class FileManager {
 		}
 		return "experimentBaseDirectory";
 	}
+
 
 	/**
 	 * Cria um prompt para o user escolher onde estão os ficheiros ham.log,
@@ -54,8 +58,7 @@ public class FileManager {
 	 *            directoria.
 	 * @return Pasta a usar para experimentBaseDirectory.
 	 */
-	public void FileFolderPrompt(Component parent) {
-		JFileChooser chooser = new JFileChooser();
+	public String FileFolderPrompt(Component parent) {
 		// revisao possivel - permitir escolher ficheiros individualmente em vez
 		// de
 		// pasta inteira
@@ -67,7 +70,10 @@ public class FileManager {
 			System.out.println("Selected Folder:  " + chooser.getSelectedFile().getName());
 			this.executionPath = chooser.getSelectedFile().getAbsolutePath();
 			folderParser(executionPath);
+			return executionPath;
 		}
+		return null;
+		
 	}
 
 	/**
@@ -78,7 +84,7 @@ public class FileManager {
 	 *            path para a pasta a percorrer
 	 */
 	public void folderParser(String executionPath) {
-
+		 
 		files = new File(executionPath).listFiles(new FileFilter() {
 			public boolean accept(File f) {
 				return (f.getName().endsWith(".cf") || f.getName().endsWith(".log"));
@@ -131,4 +137,33 @@ public class FileManager {
 		return null;
 	}
 
+	public ArrayList<String> getLines() {
+		return lines;
+	}
+
+	public String getExecutionPath() {
+		return executionPath;
+	}
+
+	public File[] getFiles() {
+		return files;
+	}
+
+	public ArrayList<String> getHam() {
+		return ham;
+	}
+
+
+	public ArrayList<String> getSpam() {
+		return spam;
+	}
+
+
+	public ArrayList<String> getRules() {
+		return rules;
+	}
+
+	public JFileChooser getChooser() {
+		return chooser;
+	}
 }
