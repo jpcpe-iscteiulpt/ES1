@@ -1,6 +1,8 @@
 package antiSpamFilter;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -15,11 +17,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class GUI {
@@ -28,7 +36,14 @@ public class GUI {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-
+	private String experimentBaseDirectory;
+	private String folder;
+	private File[] files;
+	private String executionPath;
+	private ArrayList<String> spam;
+	private ArrayList<String> ham;
+	private ArrayList<String> rules;
+	private FileManager fm;
 	/**
 	 * Launch the application.
 	 */
@@ -49,7 +64,20 @@ public class GUI {
 	 * Create the application.
 	 */
 	public GUI() {
-		initialize();
+		fm = new FileManager();
+				
+	    experimentBaseDirectory = fm.BaseDirectoryPrompt(getFrmFiltroAntispam());
+	    executionPath = fm.getExecutionPath();
+	    
+	//  alterar para ser chamado pelo user usando a GUI
+	    folder = fm.FileFolderPrompt(getFrmFiltroAntispam());
+	    
+	    files = fm.getFiles();
+	    if(files.length!=3){
+	    	JOptionPane.showMessageDialog(null, "Pasta inválida.");
+	    } else {
+	    	initialize();
+	    }
 	}
 
 	/**
@@ -77,11 +105,13 @@ public class GUI {
 		textField.setBounds(139, 30, 173, 20);
 		panel1.add(textField);
 		textField.setColumns(10);
+		textField.setText(files[1].getPath());
 		
 		
 		JCheckBox rules_check = new JCheckBox("");
 		rules_check.setBounds(347, 30, 21, 21);
 		rules_check.setEnabled(false);
+		rules_check.setSelected(true);
 		panel1.add(rules_check);
 		
 		textField.addFocusListener(new FocusListener(){
@@ -114,7 +144,9 @@ public class GUI {
 		JCheckBox spam_check = new JCheckBox("");
 		spam_check.setEnabled(false);
 		spam_check.setBounds(347, 86, 21, 21);
+		spam_check.setSelected(true);
 		panel1.add(spam_check);
+		textField_1.setText(files[2].getPath());
 
 		
 		textField_1.addFocusListener(new FocusListener() {
@@ -142,9 +174,11 @@ public class GUI {
 		textField_2.setBounds(139, 142, 173, 20);
 		panel1.add(textField_2);
 		textField_2.setColumns(10);
+		textField_2.setText(files[0].getPath());
 		
 		JCheckBox ham_check = new JCheckBox("");
 		ham_check.setEnabled(false);
+		ham_check.setSelected(true);
 		ham_check.setBounds(347, 142, 21, 21);
 		panel1.add(ham_check);
 		
@@ -217,16 +251,10 @@ public class GUI {
 		textField_1 = new JTextField();
 		textField_1.setBounds(327, 226, 50, 20);
 		panel3.add(textField_1);
+		
 		textField_1.setColumns(10);
 		textField_1.setEditable(false);
-		
-		JLabel lblRegras = new JLabel("Regras");
-		lblRegras.setBounds(89, 50, 46, 14);
-		panel3.add(lblRegras);
-		
-		JLabel lblPesos = new JLabel("Pesos");
-		lblPesos.setBounds(275, 50, 46, 14);
-		panel3.add(lblPesos);
+
 		
 		//JPanel4
 		
@@ -257,15 +285,7 @@ public class GUI {
 		textField_1.setBounds(323, 216, 50, 20);
 		textField_1.setEditable(false);
 		panel4.add(textField_1);
-		
-		JLabel label_3 = new JLabel("Regras");
-		label_3.setBounds(85, 40, 46, 14);
-		panel4.add(label_3);
-		
-		JLabel label_4 = new JLabel("Pesos");
-		label_4.setBounds(271, 40, 46, 14);
-		panel4.add(label_4);
-		
+				
 		//Butões painel1
 		JButton btnSeguinte = new JButton("Seguinte");
 		btnSeguinte.setBounds(173, 199, 109, 23);
@@ -275,6 +295,58 @@ public class GUI {
 				if(rules_check.isSelected() && spam_check.isSelected() && ham_check.isSelected()){
 					panel1.setVisible(false);
 					panel2.setVisible(true);
+					ham = fm.Read(files[0]);
+					rules = fm.Read(files[1]);
+					spam = fm.Read(files[2]);
+					
+					//Configuração manual
+					JPanel container = new JPanel();
+					container.setLayout(new BorderLayout());
+					panel3.add(container);
+					container.setBounds(50, 45, 377, 175);
+					String [] header={"Regras","Pesos"};
+					String[][] data = new String[rules.size()][2];
+					for(int i=0; i<rules.size(); i++){
+						data[i][0] = rules.get(i);
+						data[i][1] = "0"; // usar função para gerar automaticamente
+					}
+
+			        DefaultTableModel model = new DefaultTableModel(data,header);
+
+			        JTable table = new JTable(model);
+			        container.add(table,BorderLayout.CENTER);
+
+			        JScrollPane js=new JScrollPane(table);
+			        js.setVisible(true);
+			        container.add(js);
+			        
+			        //Configuração automática
+			        JPanel container2 = new JPanel();
+					container2.setLayout(new BorderLayout());
+					panel4.add(container2);
+					container2.setBounds(50, 45, 377, 175);
+					String [] header2={"Regras","Pesos"};
+					String[][] data2 = new String[rules.size()][2];
+					for(int i=0; i<rules.size(); i++){
+						data2[i][0] = rules.get(i);
+						data2[i][1] = "0"; // usar algoritmo
+					}
+					
+					DefaultTableModel model2 = new DefaultTableModel(data2,header2) {
+
+					    @Override
+					    public boolean isCellEditable(int row, int column) {
+					       //all cells false
+					       return false;
+					    }
+					};
+
+			        JTable table2 = new JTable(model2);
+			        container2.add(table2,BorderLayout.CENTER);
+			        table2.setEnabled(false);
+			        JScrollPane js2=new JScrollPane(table2);
+			        js.setVisible(true);
+			        container2.add(js2);
 				} else {
 					JOptionPane.showMessageDialog(frmFiltroAntispam, "Por favor preencha todos os campos.");
 				}
