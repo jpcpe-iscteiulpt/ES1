@@ -18,7 +18,7 @@ public class FileManager {
 
 	private ArrayList<String> lines;
 	private String executionPath;
-	
+
 	JFileChooser chooser = new JFileChooser();
 
 	private File[] files;
@@ -26,11 +26,9 @@ public class FileManager {
 	private ArrayList<String> ham;
 	private ArrayList<String> spam;
 	private ArrayList<String> rules;
-	
+
 	public FileManager() {
 	}
-
-	
 
 	/**
 	 * Cria um prompt para o user indicar onde quer guardar os resultados, o
@@ -50,7 +48,6 @@ public class FileManager {
 		}
 		return "experimentBaseDirectory";
 	}
-
 
 	/**
 	 * Cria um prompt para o user escolher onde estão os ficheiros ham.log,
@@ -76,7 +73,7 @@ public class FileManager {
 			return executionPath;
 		}
 		return null;
-		
+
 	}
 
 	/**
@@ -87,7 +84,7 @@ public class FileManager {
 	 *            path para a pasta a percorrer
 	 */
 	public void folderParser(String executionPath) {
-		 
+
 		files = new File(executionPath).listFiles(new FileFilter() {
 			public boolean accept(File f) {
 				return (f.getName().endsWith(".cf") || f.getName().endsWith(".log"));
@@ -139,22 +136,19 @@ public class FileManager {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Cria um vetor de números aleatórios do tipo double num intervalo de [-5,5]
+	 * Cria um vetor de números aleatórios do tipo double num intervalo de
+	 * [-5,5]
 	 * 
 	 */
-	private ArrayList<String> generateRandomWeights(){
-		
-		ArrayList<String> randomWeights = new ArrayList<String>();
+	private ArrayList<String> generateRandomWeights() {
 
+		ArrayList<String> randomWeights = new ArrayList<String>();
 		Random randomNumberGenerator = new Random();
-		
-		for(int i = 0; i < 335; i++) {
+		for (int i = 0; i < 335; i++) {
 			randomWeights.add(new Double(-5.0 + (5.0 - (-5.0)) * randomNumberGenerator.nextDouble()).toString());
-		
 		}
-		
 		return randomWeights;
 	}
 
@@ -174,11 +168,9 @@ public class FileManager {
 		return ham;
 	}
 
-
 	public ArrayList<String> getSpam() {
 		return spam;
 	}
-
 
 	public ArrayList<String> getRules() {
 		return rules;
