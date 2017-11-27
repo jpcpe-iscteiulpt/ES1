@@ -242,18 +242,19 @@ public class GUI {
 		lblFalsosNegativos.setBounds(230, 229, 120, 14);
 		panel3.add(lblFalsosNegativos);
 		
-		textField = new JTextField();
-		textField.setBounds(144, 226, 50, 20);
-		panel3.add(textField);
-		textField.setColumns(10);
-		textField.setEditable(false);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(327, 226, 50, 20);
-		panel3.add(textField_1);
+		JTextField textFieldm = new JTextField();
+		textFieldm.setBounds(144, 226, 50, 20);
+		panel3.add(textFieldm);
+		textFieldm.setColumns(10);
+		textFieldm.setEditable(false);
 		
-		textField_1.setColumns(10);
-		textField_1.setEditable(false);
+		JTextField textField_1m = new JTextField();
+		textField_1m.setBounds(327, 226, 50, 20);
+		panel3.add(textField_1m);
+		
+		textField_1m.setColumns(10);
+		textField_1m.setEditable(false);
 
 		
 		//JPanel4
@@ -303,7 +304,7 @@ public class GUI {
 					JPanel container = new JPanel();
 					container.setLayout(new BorderLayout());
 					panel3.add(container);
-					container.setBounds(50, 45, 377, 175);
+					container.setBounds(50, 45, 377, 155);
 					String [] header={"Regras","Pesos"};
 					String[][] data = new String[rules.size()][2];
 					for(int i=0; i<rules.size(); i++){
@@ -319,6 +320,24 @@ public class GUI {
 			        JScrollPane js=new JScrollPane(table);
 			        js.setVisible(true);
 			        container.add(js);
+			        
+			        JButton evaluate = new JButton("Refazer");
+					evaluate.setBounds(190, 202, 80, 20);
+					panel3.add(evaluate);
+					
+					evaluate.addActionListener(new ActionListener(){
+
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							double[] pesos = new double[model.getRowCount()];
+							for(int i=0; i<model.getRowCount(); i++){
+								pesos[i] = Double.parseDouble(model.getValueAt(i,1).toString());
+								evaluate(textFieldm,textField_1m,pesos);
+							}
+							
+						}
+						
+					});
 			        
 			        //Configuração automática
 			        JPanel container2 = new JPanel();
@@ -390,6 +409,50 @@ public class GUI {
 		});
 		
 		
+	}
+	
+	public int findRules(String s) {
+		int posicao = 0;
+
+		for (int i = 0; i < rules.size(); i++) {
+			if (rules.get(i).contains(s)) {
+				posicao = i;
+			}
+		}
+		return posicao;
+	}
+	
+	public void evaluate(JTextField fpt, JTextField fnt, double[] x){
+		int fp=0;
+		for (int i = 0; i < ham.size(); i++) {
+			double acumulator=0;
+			String[] line = ham.get(i).split("\t");
+			for (int j = 1; j < line.length; j++) {
+				// System.out.println(j+" "+ line[j]);
+				int position= findRules(line[j]);
+				acumulator+=x[position];	
+			}
+			if(acumulator>=5){
+				fp++;
+			}
+		}
+
+	int fn = 0;
+		for (int i = 0; i < spam.size(); i++) {
+			double acumulator=0;
+			String[] line = spam.get(i).split("\t");
+			for (int j = 1; j < line.length; j++) {
+				int position= findRules(line[j]);
+				acumulator+=x[position];					
+			}
+			if(acumulator<5){
+				fn++;
+			}
+		}
+		fpt.setText(String.valueOf(fp));
+		fnt.setText(String.valueOf(fn));
+		fpt.revalidate();
+		fnt.revalidate();
 	}
 
 	public JFrame getFrmFiltroAntispam() {
