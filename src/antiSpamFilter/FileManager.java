@@ -142,7 +142,7 @@ public class FileManager {
 	 * [-5,5]
 	 * 
 	 */
-	private ArrayList<String> generateRandomWeights() {
+	public ArrayList<String> generateRandomWeights() {
 
 		ArrayList<String> randomWeights = new ArrayList<String>();
 		Random randomNumberGenerator = new Random();

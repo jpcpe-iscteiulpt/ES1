@@ -21,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
@@ -309,12 +311,38 @@ public class GUI {
 					String[][] data = new String[rules.size()][2];
 					for(int i=0; i<rules.size(); i++){
 						data[i][0] = rules.get(i);
-						data[i][1] = "0"; // usar função para gerar automaticamente
+						data[i][1] = fm.generateRandomWeights().get(i);
 					}
 
 			        DefaultTableModel model = new DefaultTableModel(data,header);
-
+			        
 			        JTable table = new JTable(model);
+			        
+			        table.getModel().addTableModelListener(new TableModelListener() {
+						
+						@Override
+						public void tableChanged(TableModelEvent e) {
+							for(int i = 0; i < rules.size(); i++) {	
+								try {
+
+									if(Double.parseDouble(model.getValueAt(i, 1).toString()) > 5.0) {
+										JOptionPane.showMessageDialog(frmFiltroAntispam, "Valor inválido, por favor insira um valor entre -5.0 e 5.0");
+										model.setValueAt(5.0, i, 1);
+									}
+								
+									if(Double.parseDouble(model.getValueAt(i, 1).toString()) < -5.0) {
+										JOptionPane.showMessageDialog(frmFiltroAntispam, "Valor inválido, por favor insira um valor entre -5.0 e 5.0");
+										model.setValueAt(-5.0, i, 1);
+									}
+								
+								} catch (NumberFormatException exception) {
+									JOptionPane.showMessageDialog(frmFiltroAntispam, "Formato incorreto, insira um número!");
+									model.setValueAt(data[i][1], i, 1);
+								}
+							}
+						}
+					});
+			        
 			        container.add(table,BorderLayout.CENTER);
 
 			        JScrollPane js=new JScrollPane(table);
