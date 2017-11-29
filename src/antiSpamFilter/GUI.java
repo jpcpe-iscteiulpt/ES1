@@ -247,6 +247,7 @@ public class GUI {
 			    if(files[1] != null){
 			    	rules_check.setSelected(true);
 			    }
+			    //sdfhwef
 			    textFieldS.setText(files[2].getPath());
 			    if(files[2] != null){
 			    	spam_check.setSelected(true);
