@@ -66,20 +66,7 @@ public class GUI {
 	 * Create the application.
 	 */
 	public GUI() {
-		fm = new FileManager();
-				
-	    experimentBaseDirectory = fm.BaseDirectoryPrompt(getFrmFiltroAntispam());
-	    executionPath = fm.getExecutionPath();
-	    
-	//  alterar para ser chamado pelo user usando a GUI
-	    folder = fm.FileFolderPrompt(getFrmFiltroAntispam());
-	    
-	    files = fm.getFiles();
-	    if(files.length!=3){
-	    	JOptionPane.showMessageDialog(null, "Pasta inválida.");
-	    } else {
-	    	initialize();
-	    }
+	    initialize();
 	}
 
 	/**
@@ -103,70 +90,36 @@ public class GUI {
 		lblRulescf.setBounds(60, 33, 79, 14);
 		panel1.add(lblRulescf);
 		
-		textField = new JTextField();
-		textField.setBounds(139, 30, 173, 20);
-		panel1.add(textField);
-		textField.setColumns(10);
-		textField.setText(files[1].getPath());
+		JTextField textFieldR = new JTextField();
+		textFieldR.setBounds(139, 30, 173, 20);
+		panel1.add(textFieldR);
+		textFieldR.setColumns(10);
+		textFieldR.setEditable(false);
+
 		
 		
 		JCheckBox rules_check = new JCheckBox("");
 		rules_check.setBounds(347, 30, 21, 21);
 		rules_check.setEnabled(false);
-		rules_check.setSelected(true);
 		panel1.add(rules_check);
 		
-		textField.addFocusListener(new FocusListener(){
-
-			@Override
-			public void focusGained(FocusEvent arg0) {
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				JTextField t=(JTextField)e.getSource();
-				if(!t.getText().equals("")){
-					rules_check.setSelected(true);
-				} else {
-					rules_check.setSelected(false);
-				}
-			}
-			
-		});
 		
 		JLabel lblSpamlog = new JLabel("Spam.log");
 		lblSpamlog.setBounds(60, 89, 69, 14);
 		panel1.add(lblSpamlog);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(139, 86, 173, 20);
-		panel1.add(textField_1);
-		textField_1.setColumns(10);
+		JTextField textFieldS = new JTextField();
+		textFieldS.setBounds(139, 86, 173, 20);
+		panel1.add(textFieldS);
+		textFieldS.setColumns(10);
+		textFieldS.setEditable(false);
 		
 		JCheckBox spam_check = new JCheckBox("");
 		spam_check.setEnabled(false);
 		spam_check.setBounds(347, 86, 21, 21);
-		spam_check.setSelected(true);
 		panel1.add(spam_check);
-		textField_1.setText(files[2].getPath());
+//		
 
-		
-		textField_1.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				JTextField t=(JTextField)e.getSource();
-				if(!t.getText().equals("")){
-					spam_check.setSelected(true);
-				} else {
-					spam_check.setSelected(false);
-				}
-			}
-
-		});
 		
 		JLabel lblHamlog = new JLabel("Ham.log");
 		lblHamlog.setBounds(62, 145, 67, 14);
@@ -176,30 +129,15 @@ public class GUI {
 		textField_2.setBounds(139, 142, 173, 20);
 		panel1.add(textField_2);
 		textField_2.setColumns(10);
-		textField_2.setText(files[0].getPath());
+		
+	//	
+		textField_2.setEditable(false);
 		
 		JCheckBox ham_check = new JCheckBox("");
 		ham_check.setEnabled(false);
-		ham_check.setSelected(true);
 		ham_check.setBounds(347, 142, 21, 21);
 		panel1.add(ham_check);
-		
-		textField_2.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				JTextField t=(JTextField)e.getSource();
-				if(!t.getText().equals("")){
-					ham_check.setSelected(true);
-				} else {
-					ham_check.setSelected(false);
-				}
-			}
-
-		});
+	
 		
 		//JPanel 2
 		
@@ -290,8 +228,43 @@ public class GUI {
 		panel4.add(textField_1);
 				
 		//Butões painel1
+		JButton btnEscolher = new JButton("Importar");
+		btnEscolher.setBounds(90, 188, 109, 23);
+		panel1.add(btnEscolher);
+		btnEscolher.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				fm = new FileManager();
+				
+			//  alterar para ser chamado pelo user usando a GUI
+			    folder = fm.FileFolderPrompt(getFrmFiltroAntispam());
+			    
+			    files = fm.getFiles();
+			    textFieldR.setText(files[1].getPath());
+			    if(files[1] != null){
+			    	rules_check.setSelected(true);
+			    }
+			    textFieldS.setText(files[2].getPath());
+			    if(files[2] != null){
+			    	spam_check.setSelected(true);
+			    }
+			    textField_2.setText(files[0].getPath());
+			    if(files[0] != null){
+			    	ham_check.setSelected(true);
+			    }
+			}
+		
+				
+				
+		});
+		
+		
+		
 		JButton btnSeguinte = new JButton("Seguinte");
-		btnSeguinte.setBounds(173, 199, 109, 23);
+		btnSeguinte.setBounds(215, 188, 109, 23);
 		btnSeguinte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
