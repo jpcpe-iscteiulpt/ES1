@@ -67,7 +67,6 @@ public class FileManager {
 		chooser.setFileFilter(filter);
 
 		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-			System.out.println("Selected Folder:  " + chooser.getSelectedFile().getName());
 			this.executionPath = chooser.getSelectedFile().getAbsolutePath();
 			folderParser(executionPath);
 			return executionPath;
@@ -84,7 +83,8 @@ public class FileManager {
 	 *            path para a pasta a percorrer
 	 */
 	public void folderParser(String executionPath) {
-
+		
+		
 		files = new File(executionPath).listFiles(new FileFilter() {
 			public boolean accept(File f) {
 				return (f.getName().endsWith(".cf") || f.getName().endsWith(".log"));

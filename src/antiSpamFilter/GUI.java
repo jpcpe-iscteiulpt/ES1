@@ -243,18 +243,39 @@ public class GUI {
 			    folder = fm.FileFolderPrompt(getFrmFiltroAntispam());
 			    
 			    files = fm.getFiles();
-			    textFieldR.setText(files[1].getPath());
-			    if(files[1] != null){
+			    boolean ham = false;
+			    boolean spam = false;
+			    boolean rules = false;
+			    int hami = 0;
+			    int spami = 0;
+			    int rulesi = 0;
+			    int count = 0;
+			    for (File f : files) {
+					if (f.getName().contains("ham")) {
+						ham = true;
+						hami = count;
+					}
+					if (f.getName().contains("spam")) {
+						spam = true;
+						spami = count;
+					}
+					if (f.getName().contains("rules")) {
+						rules = true;
+						rulesi = count;
+					}
+					count++;
+				}
+			    if(rules){
 			    	rules_check.setSelected(true);
+			    	textFieldR.setText(files[rulesi].getPath());
 			    }
-			    //sdfhwef
-			    textFieldS.setText(files[2].getPath());
-			    if(files[2] != null){
+			    if(spam){
 			    	spam_check.setSelected(true);
+			    	textFieldS.setText(files[spami].getPath());
 			    }
-			    textField_2.setText(files[0].getPath());
-			    if(files[0] != null){
+			    if(ham){
 			    	ham_check.setSelected(true);
+			    	textField_2.setText(files[hami].getPath());
 			    }
 			}
 		
