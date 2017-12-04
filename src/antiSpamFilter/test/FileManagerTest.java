@@ -20,11 +20,11 @@ public class FileManagerTest {
 	public void testFileManager() {
 	}
 
-	@Test
-	public void testBaseDirectoryPrompt() {
-		assertNotNull("should not be null", fm.BaseDirectoryPrompt(new JFrame()));
-		assertEquals(fm.getChooser().showOpenDialog(new JFrame()), JFileChooser.APPROVE_OPTION);
-	}
+//	@Test
+//	public void testBaseDirectoryPrompt() {
+//		assertNotNull("should not be null", fm.BaseDirectoryPrompt(new JFrame()));
+//		assertEquals(fm.getChooser().showOpenDialog(new JFrame()), JFileChooser.APPROVE_OPTION);
+//	}
 
 	@Test
 	public void testFileFolderPrompt() {
@@ -43,10 +43,16 @@ public class FileManagerTest {
 
 	@Test
 	public void testRead() {
-		
 		fm.Read(new File(""));
 		assertNotNull("should not be null", fm.getLines());
 	}
 	
-	
+	@Test
+	public void testGetExecutionPath(){
+		assertNotNull("should not be null", fm.getExecutionPath());	
+	}
+	@Test
+	public void testGetFiles(){
+		assertNotNull("should not be null", fm.getFiles());	
+	}
 }

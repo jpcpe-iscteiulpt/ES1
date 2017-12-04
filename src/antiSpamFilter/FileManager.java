@@ -39,15 +39,15 @@ public class FileManager {
 	 *            directoria.
 	 * @return Pasta a usar para experimentBaseDirectory.
 	 */
-	public String BaseDirectoryPrompt(Component parent) {
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-			System.out.println("Selected Experiment Directory:  " + chooser.getSelectedFile().getAbsolutePath());
-			return chooser.getSelectedFile().getAbsolutePath();
-		}
-		return "experimentBaseDirectory";
-	}
+//	public String BaseDirectoryPrompt(Component parent) {
+//		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//
+//		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+//			System.out.println("Selected Experiment Directory:  " + chooser.getSelectedFile().getAbsolutePath());
+//			return chooser.getSelectedFile().getAbsolutePath();
+//		}
+//		return "experimentBaseDirectory";
+//	}
 
 	/**
 	 * Cria um prompt para o user escolher onde estão os ficheiros ham.log,

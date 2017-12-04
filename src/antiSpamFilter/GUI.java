@@ -227,7 +227,7 @@ public class GUI {
 		textField_1.setEditable(false);
 		panel4.add(textField_1);
 				
-		//Butões painel1
+		//botões painel1
 		JButton btnEscolher = new JButton("Importar");
 		btnEscolher.setBounds(90, 188, 109, 23);
 		panel1.add(btnEscolher);
@@ -397,7 +397,7 @@ public class GUI {
 		});
 		panel1.add(btnSeguinte);
 		
-		//Butões painel2
+		//botões painel2
 		JButton btnAnterior2 = new JButton("Anterior");
 		btnAnterior2.setBounds(90, 188, 109, 23);
 		panel2.add(btnAnterior2);

@@ -12,11 +12,21 @@ public class AntiSpamFilterProblem extends AbstractDoubleProblem {
 	private ArrayList<String> ham;
 	private ArrayList<String> spam;
 	private ArrayList<String> rules;
+	
+	DoubleSolution solution;
+
+	public DoubleSolution getSolution() {
+		return solution;
+	}
+
+	public void setSolution(DoubleSolution solution) {
+		this.solution = solution;
+	}
 
 	public AntiSpamFilterProblem() {
 		// 10 variables (anti-spam filter rules) by default
 		this(335);
-		fm.folderParser("C:/Users/metal_000/Desktop");
+		fm.folderParser("experimentBaseDirectory");
 		this.ham = fm.getHam();
 		this.spam = fm.getSpam();
 		this.rules = fm.getRules();
@@ -51,6 +61,8 @@ public class AntiSpamFilterProblem extends AbstractDoubleProblem {
 	}
 
 	public void evaluate(DoubleSolution solution) {
+		
+		this.solution=solution;
 
 		double aux, xi, xj;
 		double[] x = new double[getNumberOfVariables()];
