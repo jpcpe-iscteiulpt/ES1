@@ -3,6 +3,7 @@ package antiSpamFilter.test;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JFileChooser;
@@ -54,5 +55,17 @@ public class FileManagerTest {
 	@Test
 	public void testGetFiles(){
 		assertNotNull("should not be null", fm.getFiles());	
+	}
+	
+	@Test
+	public void testGenerateRandomWeights() {
+		ArrayList<String> testRandomWeightArray = fm.generateRandomWeights();
+		
+		assertNotNull("should not be null", testRandomWeightArray);
+		
+		for(int i = 0; i < testRandomWeightArray.size(); i++) {
+			assertFalse(Double.parseDouble(testRandomWeightArray.get(i)) < -5.00000);
+			assertFalse(Double.parseDouble(testRandomWeightArray.get(i)) > 5.00000);
+		}
 	}
 }
