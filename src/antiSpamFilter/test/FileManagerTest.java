@@ -66,6 +66,8 @@ public class FileManagerTest {
 		for(int i = 0; i < testRandomWeightArray.size(); i++) {
 			assertFalse(Double.parseDouble(testRandomWeightArray.get(i)) < -5.00000);
 			assertFalse(Double.parseDouble(testRandomWeightArray.get(i)) > 5.00000);
+			
+			
 		}
 	}
 }
