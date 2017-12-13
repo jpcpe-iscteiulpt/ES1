@@ -497,17 +497,14 @@ public class GUI {
 	public JTextField getTextField_1() {
 		return textField_1;
 	}
-
-	public void setTextField_1(JTextField textField_1) {
-		this.textField_1 = textField_1;
-	}
-
 	public JTextField getTextField_2() {
 		return textField_2;
 	}
 
-	public void setTextField_2(JTextField textField_2) {
-		this.textField_2 = textField_2;
+	public void setFiles(ArrayList<String> hamf, ArrayList<String> spamf, ArrayList<String> rulesf) {
+		ham = hamf;
+		spam = spamf;
+		rules = rulesf;
 	}
 	
 
