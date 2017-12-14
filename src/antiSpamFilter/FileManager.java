@@ -27,6 +27,9 @@ public class FileManager {
 	private ArrayList<String> spam;
 	private ArrayList<String> rules;
 
+	private ArrayList<String> weights;
+	private ArrayList<String> solutions;
+
 	public FileManager() {
 	}
 
@@ -39,15 +42,16 @@ public class FileManager {
 	 *            directoria.
 	 * @return Pasta a usar para experimentBaseDirectory.
 	 */
-//	public String BaseDirectoryPrompt(Component parent) {
-//		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//
-//		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-//			System.out.println("Selected Experiment Directory:  " + chooser.getSelectedFile().getAbsolutePath());
-//			return chooser.getSelectedFile().getAbsolutePath();
-//		}
-//		return "experimentBaseDirectory";
-//	}
+	// public String BaseDirectoryPrompt(Component parent) {
+	// chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	//
+	// if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+	// System.out.println("Selected Experiment Directory: " +
+	// chooser.getSelectedFile().getAbsolutePath());
+	// return chooser.getSelectedFile().getAbsolutePath();
+	// }
+	// return "experimentBaseDirectory";
+	// }
 
 	/**
 	 * Cria um prompt para o user escolher onde estão os ficheiros ham.log,
@@ -83,11 +87,10 @@ public class FileManager {
 	 *            path para a pasta a percorrer
 	 */
 	public void folderParser(String executionPath) {
-		
-		
+
 		files = new File(executionPath).listFiles(new FileFilter() {
 			public boolean accept(File f) {
-				return (f.getName().endsWith(".cf") || f.getName().endsWith(".log"));
+				return (f.getName().endsWith(".cf") || f.getName().endsWith(".log")||f.getName().contains("AntiSpamFilterProblem"));
 			}
 		});
 
@@ -100,7 +103,14 @@ public class FileManager {
 			}
 			if (f.getName().contains("rules")) {
 				rules = Read(f);
-			}
+			} 
+				if (f.getName().contains("AntiSpamFilterProblem.rf")) {
+					solutions = Read(f);
+				}
+				if (f.getName().contains("AntiSpamFilterProblem.rs")) {
+					weights = Read(f);
+				}
+			
 		}
 	}
 
@@ -179,4 +189,22 @@ public class FileManager {
 	public JFileChooser getChooser() {
 		return chooser;
 	}
+
+	public ArrayList<String> getWeights() {
+		return weights;
+	}
+
+	public void setWeights(ArrayList<String> weights) {
+		this.weights = weights;
+	}
+
+	public ArrayList<String> getSolutions() {
+		return solutions;
+	}
+
+	public void setSolutions(ArrayList<String> solutions) {
+		this.solutions = solutions;
+	}
+	
+	
 }
