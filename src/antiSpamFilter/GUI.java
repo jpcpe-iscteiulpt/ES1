@@ -545,13 +545,19 @@ public class GUI {
 		/**
 		 * Criação da Lista de soluções
 		 */
+		int s = 0;
+		
 		for (int i = 0; i < fm.getSolutions().size(); i++) {
 			model.addElement(fm.getSolutions().get(i));
+			if(Double.parseDouble(fm.getSolutions().get(i).split("\\s+")[1]) < Double.parseDouble(fm.getSolutions().get(s).split("\\s+")[1])) {
+				s = i;
+			}
 		}
 
 		JList list = new JList<>(model);
 		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel.add(list);
+		list.setSelectedIndex(s);
 
 		list.addListSelectionListener(new ListSelectionListener() {
 
