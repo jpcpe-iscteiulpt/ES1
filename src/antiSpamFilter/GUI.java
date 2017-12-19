@@ -35,7 +35,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -406,9 +408,12 @@ public class GUI {
 					JScrollPane js2 = new JScrollPane(table2);
 					js.setVisible(true);
 					container2.add(js2);
+
+					JPanel autoConfigurationButtonPanel = new JPanel();
+					autoConfigurationButtonPanel.setLayout(new GridLayout(0, 2));
+
 					JButton runAuto = new JButton("Iniciar");
 					runAuto.setBounds(190, 240, 80, 20);
-					panel4.add(runAuto);
 
 					runAuto.addActionListener(new ActionListener() {
 
@@ -426,6 +431,20 @@ public class GUI {
 							}
 						}
 					});
+
+					JButton saveBestSolutionToFile = new JButton("Guardar");
+
+					saveBestSolutionToFile.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							writeBestSolutionWeightsToFile();
+						}
+					});
+
+					autoConfigurationButtonPanel.add(runAuto);
+					autoConfigurationButtonPanel.add(saveBestSolutionToFile);
+					container2.add(autoConfigurationButtonPanel, BorderLayout.SOUTH);
 
 				} else {
 					JOptionPane.showMessageDialog(frmFiltroAntispam, "Por favor preencha todos os campos.");
@@ -537,11 +556,11 @@ public class GUI {
 		JLabel lblEscolhaUmaSoluo = new JLabel("Escolha uma solu\u00E7\u00E3o:");
 		panel_1.add(lblEscolhaUmaSoluo);
 		lblEscolhaUmaSoluo.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("(A melhor está pré-seleccionada)");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel_1);
-		
+
 		JLabel lblNewLabel = new JLabel("Falsos Positivos | Falsos Negativos");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel);
@@ -550,12 +569,13 @@ public class GUI {
 		 * Criação da Lista de soluções
 		 */
 		int s = 0;
-		
+
 		for (int i = 0; i < fm.getSolutions().size(); i++) {
 			model.addElement(fm.getSolutions().get(i));
-			if(Double.parseDouble(fm.getSolutions().get(i).split("\\s+")[1]) < Double.parseDouble(fm.getSolutions().get(s).split("\\s+")[1])) {
+			if (Double.parseDouble(fm.getSolutions().get(i).split("\\s+")[1]) < Double
+					.parseDouble(fm.getSolutions().get(s).split("\\s+")[1])) {
 				s = i;
-				solutionSelection=i;
+				solutionSelection = i;
 			}
 		}
 
@@ -592,6 +612,25 @@ public class GUI {
 		solutionFrame.setVisible(true);
 		solutionFrame.setLocationRelativeTo(null);
 		// solutionFrame.pack();
+	}
+
+	private void writeBestSolutionWeightsToFile() {
+
+		try {
+			BufferedWriter writeToConfigurationFile = new BufferedWriter(
+					new FileWriter(new File(fm.getExecutionPath() + "/rules.cf")));
+			String[] chosenSolutionWeights = fm.getWeights().get(solutionSelection).split(" ");
+
+			for (int i = 0; i < rules.size(); i++) {
+
+				writeToConfigurationFile.write(rules.get(i) + "\t" + chosenSolutionWeights[i] + "\n");
+			}
+			writeToConfigurationFile.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public JFrame getFrmFiltroAntispam() {
