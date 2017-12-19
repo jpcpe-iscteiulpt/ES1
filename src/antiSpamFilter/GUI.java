@@ -250,7 +250,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				fm = new FileManager();
+				fm = FileManager.getInstance();
 
 				folder = fm.FileFolderPrompt(getFrmFiltroAntispam());
 
@@ -537,8 +537,12 @@ public class GUI {
 		JLabel lblEscolhaUmaSoluo = new JLabel("Escolha uma solu\u00E7\u00E3o:");
 		panel_1.add(lblEscolhaUmaSoluo);
 		lblEscolhaUmaSoluo.setHorizontalAlignment(SwingConstants.CENTER);
-
-		JLabel lblNewLabel = new JLabel("(Falsos Positivos/Falsos Negativos)");
+		
+		JLabel lblNewLabel_1 = new JLabel("(A melhor está pré-seleccionada)");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel = new JLabel("Falsos Positivos | Falsos Negativos");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel);
 
@@ -551,6 +555,7 @@ public class GUI {
 			model.addElement(fm.getSolutions().get(i));
 			if(Double.parseDouble(fm.getSolutions().get(i).split("\\s+")[1]) < Double.parseDouble(fm.getSolutions().get(s).split("\\s+")[1])) {
 				s = i;
+				solutionSelection=i;
 			}
 		}
 

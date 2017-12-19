@@ -8,12 +8,12 @@ import org.uma.jmetal.solution.DoubleSolution;
 
 public class AntiSpamFilterProblem extends AbstractDoubleProblem {
 
-	FileManager fm = new FileManager();
+	private FileManager fm = FileManager.getInstance();
 	private ArrayList<String> ham;
 	private ArrayList<String> spam;
 	private ArrayList<String> rules;
 	
-	DoubleSolution solution;
+	private DoubleSolution solution;
 
 	public DoubleSolution getSolution() {
 		return solution;
@@ -26,7 +26,7 @@ public class AntiSpamFilterProblem extends AbstractDoubleProblem {
 	public AntiSpamFilterProblem() {
 		// 10 variables (anti-spam filter rules) by default
 		this(335);
-		fm.folderParser("experimentBaseDirectory");
+		fm.folderParser(fm.getExecutionPath());
 		this.ham = fm.getHam();
 		this.spam = fm.getSpam();
 		this.rules = fm.getRules();

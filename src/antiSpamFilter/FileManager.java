@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
+import javax.swing.SingleSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoSetAndFrontFromDoubleSolutions;
@@ -19,7 +20,7 @@ public class FileManager {
 	private ArrayList<String> lines;
 	private String executionPath;
 
-	JFileChooser chooser = new JFileChooser();
+	private JFileChooser chooser = new JFileChooser();
 
 	private File[] files;
 
@@ -29,6 +30,8 @@ public class FileManager {
 
 	private ArrayList<String> weights;
 	private ArrayList<String> solutions;
+	
+	private static final FileManager INSTANCE = new FileManager();
 
 	public FileManager() {
 	}
@@ -90,7 +93,8 @@ public class FileManager {
 
 		files = new File(executionPath).listFiles(new FileFilter() {
 			public boolean accept(File f) {
-				return (f.getName().endsWith(".cf") || f.getName().endsWith(".log")||f.getName().contains("AntiSpamFilterProblem"));
+				return (f.getName().endsWith(".cf") || f.getName().endsWith(".log")
+						|| f.getName().contains("AntiSpamFilterProblem"));
 			}
 		});
 
@@ -103,14 +107,14 @@ public class FileManager {
 			}
 			if (f.getName().contains("rules")) {
 				rules = Read(f);
-			} 
-				if (f.getName().contains("AntiSpamFilterProblem.rf")) {
-					solutions = Read(f);
-				}
-				if (f.getName().contains("AntiSpamFilterProblem.rs")) {
-					weights = Read(f);
-				}
-			
+			}
+			if (f.getName().contains("AntiSpamFilterProblem.rf")) {
+				solutions = Read(f);
+			}
+			if (f.getName().contains("AntiSpamFilterProblem.rs")) {
+				weights = Read(f);
+			}
+
 		}
 	}
 
@@ -205,6 +209,10 @@ public class FileManager {
 	public void setSolutions(ArrayList<String> solutions) {
 		this.solutions = solutions;
 	}
-	
+
+	public static FileManager getInstance() {
+		return INSTANCE;
+	}
+
 	
 }
