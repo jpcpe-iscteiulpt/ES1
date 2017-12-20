@@ -564,6 +564,7 @@ public class GUI {
 	 * algoritmo NSGAII e permitir ao utilizador escolher a que pretende usar. A
 	 * solução óptima é indicada por defeito
 	 */
+	
 	public void displaySolutions() {
 		fm.folderParser(Paths
 				.get(System.getProperty("user.home"), "git/ES1-2017-METIA1-55/experimentBaseDirectory/referenceFronts")
@@ -574,26 +575,26 @@ public class GUI {
 		solutionFrame.setBounds(100, 100, 450, 300);
 		solutionFrame.getContentPane().setLayout(null);
 
-		JPanel panel = new JPanel();
-		panel.setBounds(101, 11, 206, 239);
-		solutionFrame.getContentPane().add(panel);
-		panel.setLayout(new BorderLayout(0, 0));
+		JPanel solutionMainPanel = new JPanel();
+		solutionMainPanel.setBounds(101, 11, 206, 239);
+		solutionFrame.getContentPane().add(solutionMainPanel);
+		solutionMainPanel.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.NORTH);
-		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel solutionLabelPanel = new JPanel();
+		solutionMainPanel.add(solutionLabelPanel, BorderLayout.NORTH);
+		solutionLabelPanel.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel lblEscolhaUmaSoluo = new JLabel("Escolha uma solu\u00E7\u00E3o:");
-		panel_1.add(lblEscolhaUmaSoluo);
-		lblEscolhaUmaSoluo.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel chooseASolutionLabel = new JLabel("Escolha uma solu\u00E7\u00E3o:");
+		solutionLabelPanel.add(chooseASolutionLabel);
+		chooseASolutionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-		JLabel lblNewLabel_1 = new JLabel("(A melhor está pré-seleccionada)");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(lblNewLabel_1);
+		JLabel bestSolutionbel = new JLabel("(A melhor está pré-seleccionada)");
+		bestSolutionbel.setHorizontalAlignment(SwingConstants.CENTER);
+		solutionLabelPanel.add(bestSolutionbel);
 
-		JLabel lblNewLabel = new JLabel("Falsos Positivos | Falsos Negativos");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(lblNewLabel);
+		JLabel fpAndFnLabel = new JLabel("Falsos Positivos | Falsos Negativos");
+		fpAndFnLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		solutionLabelPanel.add(fpAndFnLabel);
 
 		/**
 		 * Criação da Lista de soluções
@@ -610,25 +611,25 @@ public class GUI {
 		solutionSelection = s;
 		System.out.println(solutionSelection);
 
-		JList list = new JList<>(model);
-		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel.add(list);
-		list.setSelectedIndex(s);
+		JList solutionList = new JList<>(model);
+		solutionList.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		solutionMainPanel.add(solutionList);
+		solutionList.setSelectedIndex(s);
 
-		list.addListSelectionListener(new ListSelectionListener() {
+		solutionList.addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent e) {
 				solutionSelection = 0;
 				if (!e.getValueIsAdjusting()) {
-					selectedValue = list.getSelectedValue();
-					solutionSelection = list.getSelectedIndex();
+					selectedValue = solutionList.getSelectedValue();
+					solutionSelection = solutionList.getSelectedIndex();
 				}
 			}
 		});
 
-		JButton confButton = new JButton("Confirmar");
-		panel.add(confButton, BorderLayout.SOUTH);
-		confButton.addActionListener(new ActionListener() {
+		JButton confirmButton = new JButton("Confirmar");
+		solutionMainPanel.add(confirmButton, BorderLayout.SOUTH);
+		confirmButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -648,6 +649,7 @@ public class GUI {
 	/**
 	 * Método para gerar o ficheiro do gráfico R
 	 */
+	
 	public void generateGraphic() {
 		String[] params = new String[2];
 		String[] envp = new String[1];
@@ -662,7 +664,7 @@ public class GUI {
 		}
 	}
 
-	// devolve o latex
+	// Devolve o latex
 
 	public void generateLatex() {
 
