@@ -1,4 +1,4 @@
-package antiSpamFilter;
+package antiSpamFilter_METIA1_55;
 
 import java.awt.Component;
 import java.io.File;
@@ -198,16 +198,8 @@ public class FileManager {
 		return weights;
 	}
 
-	public void setWeights(ArrayList<String> weights) {
-		this.weights = weights;
-	}
-
 	public ArrayList<String> getSolutions() {
 		return solutions;
-	}
-
-	public void setSolutions(ArrayList<String> solutions) {
-		this.solutions = solutions;
 	}
 
 	public static FileManager getInstance() {

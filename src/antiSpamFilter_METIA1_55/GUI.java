@@ -1,4 +1,4 @@
-package antiSpamFilter;
+package antiSpamFilter_METIA1_55;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;

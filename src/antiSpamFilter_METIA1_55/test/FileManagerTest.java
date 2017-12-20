@@ -1,4 +1,4 @@
-package antiSpamFilter.test;
+package antiSpamFilter_METIA1_55.test;
 
 import static org.junit.Assert.*;
 
@@ -11,21 +11,15 @@ import javax.swing.JFrame;
 
 import org.junit.Test;
 
-import antiSpamFilter.FileManager;
+import antiSpamFilter_METIA1_55.FileManager;
 
 public class FileManagerTest {
 	
-	FileManager fm = new FileManager();
+	private FileManager fm = FileManager.getInstance();
 
 	@Test
 	public void testFileManager() {
 	}
-
-//	@Test
-//	public void testBaseDirectoryPrompt() {
-//		assertNotNull("should not be null", fm.BaseDirectoryPrompt(new JFrame()));
-//		assertEquals(fm.getChooser().showOpenDialog(new JFrame()), JFileChooser.APPROVE_OPTION);
-//	}
 
 	@Test
 	public void testFileFolderPrompt() {
@@ -36,7 +30,7 @@ public class FileManagerTest {
 	@Test
 	public void testFolderParser() {
 //		fm.BaseDirectoryPrompt(new JFrame());
-		fm.folderParser("experimentBaseDirectory");
+		fm.folderParser(fm.getExecutionPath());
 		assertNotNull(fm.getHam());
 		assertNotNull(fm.getSpam());
 		assertNotNull(fm.getRules());		
@@ -56,6 +50,16 @@ public class FileManagerTest {
 	public void testGetFiles(){
 		assertNotNull("should not be null", fm.getFiles());	
 	}
+	@Test
+	public void testGetWeights(){
+		fm.generateRandomWeights();
+		assertNotNull("should not be null", fm.getWeights());	
+	}
+	@Test
+	public void testGetSolutions(){
+		fm.folderParser("experimentBaseDirectory/referenceFronts");
+		assertNotNull("should not be null", fm.getSolutions());	
+	}
 	
 	@Test
 	public void testGenerateRandomWeights() {
@@ -66,8 +70,6 @@ public class FileManagerTest {
 		for(int i = 0; i < testRandomWeightArray.size(); i++) {
 			assertFalse(Double.parseDouble(testRandomWeightArray.get(i)) < -5.00000);
 			assertFalse(Double.parseDouble(testRandomWeightArray.get(i)) > 5.00000);
-			
-			
 		}
 	}
 }
