@@ -32,6 +32,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
+
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -443,32 +445,8 @@ public class GUI {
 							try {
 								new AntiSpamFilterAutomaticConfiguration();
 								AntiSpamFilterAutomaticConfiguration.main(args);
-
 								displaySolutions();
-
-								String[] params = new String[2];
-								String[] envp = new String[1];
-
-								params[0] = "C:\\Program Files\\R\\R-3.4.3\\bin\\x64\\Rscript.exe";
-								params[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
-								envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
-
-								System.out.println(params[0]);
-								System.out.println(params[1]);
-								System.out.println(envp[0]);
-
-								try {
-									Process p = Runtime
-											.getRuntime()
-											.exec(params,
-													envp,
-													new File(
-															"C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R"));
-								} catch (IOException e) {
-									System.out
-											.println("Erro a gerar os gráficos R");
-								}
-
+								generateGraphic();
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -535,6 +513,31 @@ public class GUI {
 
 		});
 
+	}
+	
+	public void generateGraphic(){
+		String[] params = new String[2];
+		String[] envp = new String[1];
+
+		params[0] = "C:\\Program Files\\R\\R-3.4.3\\bin\\x64\\Rscript.exe";
+		params[1] = "experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
+		envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
+
+//		System.out.println(params[0]);
+//		System.out.println(params[1]);
+//		System.out.println(envp[0]);
+
+		try {
+			Process p = Runtime
+					.getRuntime()
+					.exec(params,
+							envp,
+							new File(
+									"experimentBaseDirectory\\AntiSpamStudy\\R"));
+		} catch (IOException e) {
+			System.out
+					.println("Erro a gerar os gráficos R");
+		}
 	}
 
 	public int findRules(String s) {
@@ -623,9 +626,10 @@ public class GUI {
 			if (Double.parseDouble(fm.getSolutions().get(i).split("\\s+")[1]) < Double
 					.parseDouble(fm.getSolutions().get(s).split("\\s+")[1])) {
 				s = i;
-				solutionSelection = i;
 			}
 		}
+		solutionSelection = s;
+		System.out.println(solutionSelection);
 
 		JList list = new JList<>(model);
 		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null,
