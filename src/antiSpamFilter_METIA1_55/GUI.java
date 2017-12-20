@@ -82,6 +82,8 @@ public class GUI {
 				}
 			}
 		});
+
+	
 	}
 
 	/**
@@ -170,7 +172,8 @@ public class GUI {
 		manual_check.setBounds(303, 46, 21, 21);
 		panel2.add(manual_check);
 
-		JLabel lblConfiguraoAutomtica = new JLabel("Configura\u00E7\u00E3o Autom\u00E1tica");
+		JLabel lblConfiguraoAutomtica = new JLabel(
+				"Configura\u00E7\u00E3o Autom\u00E1tica");
 		lblConfiguraoAutomtica.setBounds(90, 105, 181, 14);
 		panel2.add(lblConfiguraoAutomtica);
 
@@ -187,7 +190,8 @@ public class GUI {
 		panel3.setLayout(null);
 		frmFiltroAntispam.getContentPane().add(panel3);
 		panel3.setVisible(false);
-		JLabel lblConfiguraoManual1 = new JLabel("Configura\u00E7\u00E3o Manual");
+		JLabel lblConfiguraoManual1 = new JLabel(
+				"Configura\u00E7\u00E3o Manual");
 		lblConfiguraoManual1.setBounds(165, 21, 145, 25);
 		panel3.add(lblConfiguraoManual1);
 
@@ -218,7 +222,8 @@ public class GUI {
 		panel4.setLayout(null);
 		frmFiltroAntispam.getContentPane().add(panel4);
 		panel4.setVisible(false);
-		JLabel lblConfiguraoAutomtica1 = new JLabel("Configura\u00E7\u00E3o Autom\u00E1tica");
+		JLabel lblConfiguraoAutomtica1 = new JLabel(
+				"Configura\u00E7\u00E3o Autom\u00E1tica");
 		lblConfiguraoAutomtica1.setBounds(161, 11, 166, 25);
 		panel4.add(lblConfiguraoAutomtica1);
 
@@ -300,7 +305,8 @@ public class GUI {
 		btnSeguinte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				if (rules_check.isSelected() && spam_check.isSelected() && ham_check.isSelected()) {
+				if (rules_check.isSelected() && spam_check.isSelected()
+						&& ham_check.isSelected()) {
 					panel1.setVisible(false);
 					panel2.setVisible(true);
 					ham = fm.Read(files[0]);
@@ -319,37 +325,49 @@ public class GUI {
 						data[i][1] = fm.generateRandomWeights().get(i);
 					}
 
-					DefaultTableModel model = new DefaultTableModel(data, header);
+					DefaultTableModel model = new DefaultTableModel(data,
+							header);
 
 					JTable table = new JTable(model);
 
-					table.getModel().addTableModelListener(new TableModelListener() {
+					table.getModel().addTableModelListener(
+							new TableModelListener() {
 
-						@Override
-						public void tableChanged(TableModelEvent e) {
-							for (int i = 0; i < rules.size(); i++) {
-								try {
+								@Override
+								public void tableChanged(TableModelEvent e) {
+									for (int i = 0; i < rules.size(); i++) {
+										try {
 
-									if (Double.parseDouble(model.getValueAt(i, 1).toString()) > 5.0) {
-										JOptionPane.showMessageDialog(frmFiltroAntispam,
-												"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
-										model.setValueAt(5.0, i, 1);
+											if (Double.parseDouble(model
+													.getValueAt(i, 1)
+													.toString()) > 5.0) {
+												JOptionPane
+														.showMessageDialog(
+																frmFiltroAntispam,
+																"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
+												model.setValueAt(5.0, i, 1);
+											}
+
+											if (Double.parseDouble(model
+													.getValueAt(i, 1)
+													.toString()) < -5.0) {
+												JOptionPane
+														.showMessageDialog(
+																frmFiltroAntispam,
+																"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
+												model.setValueAt(-5.0, i, 1);
+											}
+
+										} catch (NumberFormatException exception) {
+											JOptionPane
+													.showMessageDialog(
+															frmFiltroAntispam,
+															"Formato incorreto, insira um número!");
+											model.setValueAt(data[i][1], i, 1);
+										}
 									}
-
-									if (Double.parseDouble(model.getValueAt(i, 1).toString()) < -5.0) {
-										JOptionPane.showMessageDialog(frmFiltroAntispam,
-												"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
-										model.setValueAt(-5.0, i, 1);
-									}
-
-								} catch (NumberFormatException exception) {
-									JOptionPane.showMessageDialog(frmFiltroAntispam,
-											"Formato incorreto, insira um número!");
-									model.setValueAt(data[i][1], i, 1);
 								}
-							}
-						}
-					});
+							});
 
 					container.add(table, BorderLayout.CENTER);
 
@@ -367,7 +385,8 @@ public class GUI {
 						public void actionPerformed(ActionEvent arg0) {
 							double[] pesos = new double[model.getRowCount()];
 							for (int i = 0; i < model.getRowCount(); i++) {
-								pesos[i] = Double.parseDouble(model.getValueAt(i, 1).toString());
+								pesos[i] = Double.parseDouble(model.getValueAt(
+										i, 1).toString());
 								evaluate(textFieldm, textField_1m, pesos);
 							}
 
@@ -410,7 +429,8 @@ public class GUI {
 					container2.add(js2);
 
 					JPanel autoConfigurationButtonPanel = new JPanel();
-					autoConfigurationButtonPanel.setLayout(new GridLayout(0, 2));
+					autoConfigurationButtonPanel
+							.setLayout(new GridLayout(0, 2));
 
 					JButton runAuto = new JButton("Iniciar");
 					runAuto.setBounds(190, 240, 80, 20);
@@ -423,7 +443,31 @@ public class GUI {
 							try {
 								new AntiSpamFilterAutomaticConfiguration();
 								AntiSpamFilterAutomaticConfiguration.main(args);
+
 								displaySolutions();
+
+								String[] params = new String[2];
+								String[] envp = new String[1];
+
+								params[0] = "C:\\Program Files\\R\\R-3.4.3\\bin\\x64\\Rscript.exe";
+								params[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
+								envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
+
+								System.out.println(params[0]);
+								System.out.println(params[1]);
+								System.out.println(envp[0]);
+
+								try {
+									Process p = Runtime
+											.getRuntime()
+											.exec(params,
+													envp,
+													new File(
+															"C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R"));
+								} catch (IOException e) {
+									System.out
+											.println("Erro a gerar os gráficos R");
+								}
 
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
@@ -434,20 +478,23 @@ public class GUI {
 
 					JButton saveBestSolutionToFile = new JButton("Guardar");
 
-					saveBestSolutionToFile.addActionListener(new ActionListener() {
+					saveBestSolutionToFile
+							.addActionListener(new ActionListener() {
 
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							writeBestSolutionWeightsToFile();
-						}
-					});
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									writeBestSolutionWeightsToFile();
+								}
+							});
 
 					autoConfigurationButtonPanel.add(runAuto);
 					autoConfigurationButtonPanel.add(saveBestSolutionToFile);
-					container2.add(autoConfigurationButtonPanel, BorderLayout.SOUTH);
+					container2.add(autoConfigurationButtonPanel,
+							BorderLayout.SOUTH);
 
 				} else {
-					JOptionPane.showMessageDialog(frmFiltroAntispam, "Por favor preencha todos os campos.");
+					JOptionPane.showMessageDialog(frmFiltroAntispam,
+							"Por favor preencha todos os campos.");
 				}
 
 			}
@@ -536,7 +583,8 @@ public class GUI {
 
 	public void displaySolutions() {
 		fm.folderParser(Paths
-				.get(System.getProperty("user.home"), "git/ES1-2017-METIA1-55/experimentBaseDirectory/referenceFronts")
+				.get(System.getProperty("user.home"),
+						"git/ES1-2017-METIA1-55/experimentBaseDirectory/referenceFronts")
 				.toString());
 
 		solutionFrame = new JFrame();
@@ -580,7 +628,8 @@ public class GUI {
 		}
 
 		JList list = new JList<>(model);
-		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null,
+				null));
 		panel.add(list);
 		list.setSelectedIndex(s);
 
@@ -602,9 +651,12 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for (int i = 0; i < rules.size(); i++) {
-					model2.setValueAt(fm.getWeights().get(solutionSelection).split(" ")[i], i, 1);
-					textField.setText(fm.getSolutions().get(solutionSelection).split(" ")[0]);
-					textField_1.setText(fm.getSolutions().get(solutionSelection).split(" ")[1]);
+					model2.setValueAt(fm.getWeights().get(solutionSelection)
+							.split(" ")[i], i, 1);
+					textField.setText(fm.getSolutions().get(solutionSelection)
+							.split(" ")[0]);
+					textField_1.setText(fm.getSolutions()
+							.get(solutionSelection).split(" ")[1]);
 				}
 			}
 		});
@@ -618,12 +670,15 @@ public class GUI {
 
 		try {
 			BufferedWriter writeToConfigurationFile = new BufferedWriter(
-					new FileWriter(new File(fm.getExecutionPath() + "/rules.cf")));
-			String[] chosenSolutionWeights = fm.getWeights().get(solutionSelection).split(" ");
+					new FileWriter(
+							new File(fm.getExecutionPath() + "/rules.cf")));
+			String[] chosenSolutionWeights = fm.getWeights()
+					.get(solutionSelection).split(" ");
 
 			for (int i = 0; i < rules.size(); i++) {
 
-				writeToConfigurationFile.write(rules.get(i) + "\t" + chosenSolutionWeights[i] + "\n");
+				writeToConfigurationFile.write(rules.get(i) + "\t"
+						+ chosenSolutionWeights[i] + "\n");
 			}
 			writeToConfigurationFile.close();
 		} catch (IOException e) {
