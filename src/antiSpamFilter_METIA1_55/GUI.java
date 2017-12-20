@@ -103,7 +103,7 @@ public class GUI {
 		mainWindowFrame.setLayout(new CardLayout(0, 0));
 
 		// File path chooser panel
-		
+
 		JPanel filePathChooserPanel = new JPanel();
 		filePathChooserPanel.setLayout(null);
 		mainWindowFrame.getContentPane().add(filePathChooserPanel);
@@ -160,7 +160,7 @@ public class GUI {
 		configurationTypeChooserPanel.setLayout(null);
 		mainWindowFrame.getContentPane().add(configurationTypeChooserPanel);
 		configurationTypeChooserPanel.setVisible(false);
-		
+
 		JLabel manualConfigurationLabel = new JLabel("Configura\u00E7\u00E3o Manual");
 		manualConfigurationLabel.setBounds(90, 53, 165, 14);
 		configurationTypeChooserPanel.add(manualConfigurationLabel);
@@ -182,12 +182,12 @@ public class GUI {
 		configurationTypeChooserButtonGroup.add(chooseAutomaticConfiguration);
 
 		// Manual configuration panel
-		
+
 		JPanel manualConfigurationPanel = new JPanel();
 		manualConfigurationPanel.setLayout(null);
 		mainWindowFrame.getContentPane().add(manualConfigurationPanel);
 		manualConfigurationPanel.setVisible(false);
-		
+
 		JLabel manualConfigurationWindowTitle = new JLabel("Configura\u00E7\u00E3o Manual");
 		manualConfigurationWindowTitle.setBounds(165, 21, 145, 25);
 		manualConfigurationPanel.add(manualConfigurationWindowTitle);
@@ -218,7 +218,7 @@ public class GUI {
 		automaticConfigurationPanel.setLayout(null);
 		mainWindowFrame.getContentPane().add(automaticConfigurationPanel);
 		automaticConfigurationPanel.setVisible(false);
-		
+
 		JLabel automaticConfigurationWindowTitle = new JLabel("Configura\u00E7\u00E3o Autom\u00E1tica");
 		automaticConfigurationWindowTitle.setBounds(161, 11, 166, 25);
 		automaticConfigurationPanel.add(automaticConfigurationWindowTitle);
@@ -244,7 +244,7 @@ public class GUI {
 		automaticConfigurationPanel.add(falseNegativesTextField_AC);
 
 		// File path chooser panel buttons
-		
+
 		JButton importFilesButton = new JButton("Importar");
 		importFilesButton.setBounds(90, 188, 109, 23);
 		filePathChooserPanel.add(importFilesButton);
@@ -259,17 +259,17 @@ public class GUI {
 				folder = fm.fileFolderPrompt(getmainWindowFrame());
 
 				files = fm.getFiles();
-				
+
 				boolean hamFound = false;
 				boolean spamFound = false;
 				boolean rulesFound = false;
-				
+
 				int hami = 0;
 				int spami = 0;
 				int rulesi = 0;
-				
+
 				int count = 0;
-				
+
 				for (File f : files) {
 					if (f.getName().contains("ham")) {
 						hamFound = true;
@@ -300,13 +300,14 @@ public class GUI {
 			}
 
 		});
-		
+
 		JButton nextButton = new JButton("Seguinte");
 		nextButton.setBounds(215, 188, 109, 23);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				if (rulesFileEncountered.isSelected() && spamFileEncountered.isSelected() && hamFileEncountered.isSelected()) {
+				if (rulesFileEncountered.isSelected() && spamFileEncountered.isSelected()
+						&& hamFileEncountered.isSelected()) {
 					filePathChooserPanel.setVisible(false);
 					configurationTypeChooserPanel.setVisible(true);
 					ham = fm.read(files[0]);
@@ -314,7 +315,7 @@ public class GUI {
 					spam = fm.read(files[2]);
 
 					// Manual Configuration
-					
+
 					JPanel manualConfigurationTablePanel = new JPanel();
 					manualConfigurationTablePanel.setLayout(new BorderLayout());
 					manualConfigurationPanel.add(manualConfigurationTablePanel);
@@ -337,13 +338,15 @@ public class GUI {
 							for (int i = 0; i < rules.size(); i++) {
 								try {
 
-									if (Double.parseDouble(manualConfigurationTableModel.getValueAt(i, 1).toString()) > 5.0) {
+									if (Double.parseDouble(
+											manualConfigurationTableModel.getValueAt(i, 1).toString()) > 5.0) {
 										JOptionPane.showMessageDialog(mainWindowFrame,
 												"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
 										manualConfigurationTableModel.setValueAt(5.0, i, 1);
 									}
 
-									if (Double.parseDouble(manualConfigurationTableModel.getValueAt(i, 1).toString()) < -5.0) {
+									if (Double.parseDouble(
+											manualConfigurationTableModel.getValueAt(i, 1).toString()) < -5.0) {
 										JOptionPane.showMessageDialog(mainWindowFrame,
 												"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
 										manualConfigurationTableModel.setValueAt(-5.0, i, 1);
@@ -374,7 +377,8 @@ public class GUI {
 						public void actionPerformed(ActionEvent arg0) {
 							double[] pesos = new double[manualConfigurationTableModel.getRowCount()];
 							for (int i = 0; i < manualConfigurationTableModel.getRowCount(); i++) {
-								pesos[i] = Double.parseDouble(manualConfigurationTableModel.getValueAt(i, 1).toString());
+								pesos[i] = Double
+										.parseDouble(manualConfigurationTableModel.getValueAt(i, 1).toString());
 								evaluate(falsePositivesTextField_MC, falseNegativesTextField_MC, pesos);
 							}
 
@@ -401,7 +405,8 @@ public class GUI {
 						}
 					}
 
-					automaticConfigurationTableModel = new DefaultTableModel(automaticConfigurationTableData, automaticConfigurationTableHeaders) {
+					automaticConfigurationTableModel = new DefaultTableModel(automaticConfigurationTableData,
+							automaticConfigurationTableHeaders) {
 						@Override
 						public boolean isCellEditable(int row, int column) {
 							// all cells false
@@ -412,7 +417,7 @@ public class GUI {
 					JTable automaticConfigurationTable = new JTable(automaticConfigurationTableModel);
 					automaticConfigurationTablePanel.add(automaticConfigurationTable, BorderLayout.CENTER);
 					automaticConfigurationTable.setEnabled(false);
-					
+
 					JScrollPane automaticConfigurationScrollPane = new JScrollPane(automaticConfigurationTable);
 					manualConfigurationScrollPane.setVisible(true);
 					automaticConfigurationTablePanel.add(automaticConfigurationScrollPane);
@@ -464,7 +469,7 @@ public class GUI {
 		filePathChooserPanel.add(nextButton);
 
 		// Configuration type chooser buttons
-		
+
 		JButton configurationTypeChooserBackButton = new JButton("Anterior");
 		configurationTypeChooserBackButton.setBounds(90, 188, 109, 23);
 		configurationTypeChooserPanel.add(configurationTypeChooserBackButton);
@@ -499,7 +504,11 @@ public class GUI {
 		});
 
 	}
-
+	/**
+	 * Percorre o ficheiro rules e retorna a posição de uma determinada regra
+	 * @param s - regra a procurar
+	 * @return ruleIndex - posição da regra no vector rules
+	 */
 	public int findRules(String s) {
 		int ruleIndex = 0;
 
@@ -511,6 +520,13 @@ public class GUI {
 		return ruleIndex;
 	}
 
+	
+	/**
+	 * método para determinar o númerop de falsos positivos e falsos negativos
+	 * @param falsePositiveTextField - textfield onde são representados os falsos positivos na janela
+	 * @param falseNegativeTextField - textfield onde são representados os falsos negativos na janela
+	 * @param x - vector com os pesos gerados
+	 */
 	public void evaluate(JTextField falsePositiveTextField, JTextField falseNegativeTextField, double[] x) {
 		int falsePositives = 0;
 		for (int i = 0; i < ham.size(); i++) {
@@ -542,11 +558,15 @@ public class GUI {
 		falsePositiveTextField.revalidate();
 		falseNegativeTextField.revalidate();
 	}
-	
+
+	/**
+	 * Método para criar uma janela que mostra as soluções geradas pelo
+	 * algoritmo NSGAII e permitir ao utilizador escolher a que pretende usar. A
+	 * solução óptima é indicada por defeito
+	 */
 	public void displaySolutions() {
 		fm.folderParser(Paths
-				.get(System.getProperty("user.home"),
-						"git/ES1-2017-METIA1-55/experimentBaseDirectory/referenceFronts")
+				.get(System.getProperty("user.home"), "git/ES1-2017-METIA1-55/experimentBaseDirectory/referenceFronts")
 				.toString());
 
 		solutionFrame = new JFrame();
@@ -591,8 +611,7 @@ public class GUI {
 		System.out.println(solutionSelection);
 
 		JList list = new JList<>(model);
-		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null,
-				null));
+		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel.add(list);
 		list.setSelectedIndex(s);
 
@@ -614,12 +633,10 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for (int i = 0; i < rules.size(); i++) {
-					automaticConfigurationTableModel.setValueAt(fm.getWeights().get(solutionSelection)
-							.split(" ")[i], i, 1);
-					falsePositivesTextField_AC.setText(fm.getSolutions().get(solutionSelection)
-							.split(" ")[0]);
-					falseNegativesTextField_AC.setText(fm.getSolutions()
-							.get(solutionSelection).split(" ")[1]);
+					automaticConfigurationTableModel.setValueAt(fm.getWeights().get(solutionSelection).split(" ")[i], i,
+							1);
+					falsePositivesTextField_AC.setText(fm.getSolutions().get(solutionSelection).split(" ")[0]);
+					falseNegativesTextField_AC.setText(fm.getSolutions().get(solutionSelection).split(" ")[1]);
 				}
 			}
 		});
@@ -628,7 +645,10 @@ public class GUI {
 		solutionFrame.setLocationRelativeTo(null);
 	}
 
-	public void generateGraphic(){
+	/**
+	 * Método para gerar o ficheiro do gráfico R
+	 */
+	public void generateGraphic() {
 		String[] params = new String[2];
 		String[] envp = new String[1];
 
@@ -636,20 +656,20 @@ public class GUI {
 		params[1] = "experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
 		envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
 		try {
-			Process p = Runtime.getRuntime().exec(params,envp,new File(	"experimentBaseDirectory\\AntiSpamStudy\\R"));
+			Process p = Runtime.getRuntime().exec(params, envp, new File("experimentBaseDirectory\\AntiSpamStudy\\R"));
 		} catch (IOException e) {
 			System.out.println("Erro a gerar os gráficos R");
 		}
 	}
-	
+
 	// devolve o latex
-	
-	public void generateLatex(){
-		
+
+	public void generateLatex() {
+
 		String[] paramsLatex = new String[2];
 		String[] envpLatex = new String[1];
 		paramsLatex[0] = "C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64\\pdflatex.exe";
-		paramsLatex[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\latex\\AntiSpamStudy.tex";
+		paramsLatex[1] = "experimentBaseDirectory\\AntiSpamStudy\\latex\\AntiSpamStudy.tex";
 		envpLatex[0] = "Path = C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64";
 
 		System.out.println(paramsLatex[0]);
@@ -657,31 +677,29 @@ public class GUI {
 		System.out.println(envpLatex[0]);
 
 		try {
-			Process p = Runtime.getRuntime().exec(paramsLatex,envpLatex,new File("C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\latex"));
+			Process p = Runtime.getRuntime().exec(paramsLatex, envpLatex, new File(
+					"experimentBaseDirectory\\AntiSpamStudy\\latex"));
 		} catch (IOException e) {
 			System.out.println("Erro a gerar o latex");
 		}
 	}
-	
-	
+
 	/**
 	 * 
-	 * Escreve o vetor de pesos de uma solução a escolha do utilizador para o ficheiro rules.cf
+	 * Escreve o vetor de pesos de uma solução a escolha do utilizador para o
+	 * ficheiro rules.cf
 	 * 
 	 */
 	private void writeBestSolutionWeightsToFile() {
 
 		try {
 			BufferedWriter writeToConfigurationFile = new BufferedWriter(
-					new FileWriter(
-							new File(fm.getExecutionPath() + "/rules.cf")));
-			String[] chosenSolutionWeights = fm.getWeights()
-					.get(solutionSelection).split(" ");
+					new FileWriter(new File(fm.getExecutionPath() + "/rules.cf")));
+			String[] chosenSolutionWeights = fm.getWeights().get(solutionSelection).split(" ");
 
 			for (int i = 0; i < rules.size(); i++) {
 
-				writeToConfigurationFile.write(rules.get(i) + "\t"
-						+ chosenSolutionWeights[i] + "\n");
+				writeToConfigurationFile.write(rules.get(i) + "\t" + chosenSolutionWeights[i] + "\n");
 			}
 			writeToConfigurationFile.close();
 		} catch (IOException e) {

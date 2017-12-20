@@ -43,12 +43,9 @@ public class FileManager {
 	 * @param parent
 	 *            - Janela sobre a qual vai ser desenhado o prompt de
 	 *            directoria.
-	 * @return Pasta a usar para experimentBaseDirectory.
+	 * @return Path da pasta escolhida.
 	 */
 	public String fileFolderPrompt(Component parent) {
-		// revisao possivel - permitir escolher ficheiros individualmente em vez
-		// de
-		// pasta inteira
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(".log e .cm", "log", "cm");
 		chooser.setFileFilter(filter);
@@ -59,15 +56,14 @@ public class FileManager {
 			return executionPath;
 		}
 		return null;
-
 	}
 
 	/**
-	 * Guarda os ficheiros ham spam e log presentes na pasta e chama o leitor
+	 * Guarda os ficheiros ham, spam, log, AntiSpamFilterProblem.rf e AntiSpamFilterProblem.rs presentes na pasta seleccionada e chama método read()
 	 * para os converter em arrays de strings
 	 * 
 	 * @param executionPath
-	 *            path para a pasta a percorrer
+	 *            path para a pasta a usar
 	 */
 	public void folderParser(String executionPath) {
 
@@ -135,6 +131,7 @@ public class FileManager {
 	 * Cria um vetor de números aleatórios do tipo double num intervalo de 
 	 * [-5,5]
 	 * 
+	 * @return array de pesos gerado
 	 */
 	public ArrayList<String> generateRandomWeights() {
 
