@@ -433,6 +433,7 @@ public class GUI {
 								AntiSpamFilterAutomaticConfiguration.main(args);
 								displaySolutions();
 								generateGraphic();
+								generateLatex();
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -635,17 +636,34 @@ public class GUI {
 		params[1] = "experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
 		envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
 		try {
-			Process p = Runtime
-					.getRuntime()
-					.exec(params,
-							envp,
-							new File(
-									"experimentBaseDirectory\\AntiSpamStudy\\R"));
+			Process p = Runtime.getRuntime().exec(params,envp,new File(	"experimentBaseDirectory\\AntiSpamStudy\\R"));
 		} catch (IOException e) {
-			System.out
-					.println("Erro a gerar os gráficos R");
+			System.out.println("Erro a gerar os gráficos R");
 		}
 	}
+	
+	// devolve o latex
+	
+	public void generateLatex(){
+		
+		String[] paramsLatex = new String[2];
+		String[] envpLatex = new String[1];
+		paramsLatex[0] = "C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64\\pdflatex.exe";
+		paramsLatex[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\latex\\AntiSpamStudy.tex";
+		envpLatex[0] = "Path = C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64";
+
+		System.out.println(paramsLatex[0]);
+		System.out.println(paramsLatex[1]);
+		System.out.println(envpLatex[0]);
+
+		try {
+			Process p = Runtime.getRuntime().exec(paramsLatex,envpLatex,new File("C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\latex"));
+		} catch (IOException e) {
+			System.out.println("Erro a gerar o latex");
+		}
+	}
+	
+	
 	/**
 	 * 
 	 * Escreve o vetor de pesos de uma solução a escolha do utilizador para o ficheiro rules.cf
