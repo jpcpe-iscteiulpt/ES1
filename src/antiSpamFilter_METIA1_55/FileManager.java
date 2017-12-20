@@ -17,7 +17,7 @@ import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoSetAndFro
 
 public class FileManager {
 
-	private ArrayList<String> lines;
+	private ArrayList<String> fileLines;
 	private String executionPath;
 
 	private JFileChooser chooser = new JFileChooser();
@@ -37,26 +37,6 @@ public class FileManager {
 	}
 
 	/**
-	 * Cria um prompt para o user indicar onde quer guardar os resultados, o
-	 * local escolhido é usado para o experimentBaseDirectory
-	 * 
-	 * @param parent
-	 *            - Janela sobre a qual vai ser desenhado o prompt de
-	 *            directoria.
-	 * @return Pasta a usar para experimentBaseDirectory.
-	 */
-	// public String BaseDirectoryPrompt(Component parent) {
-	// chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	//
-	// if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-	// System.out.println("Selected Experiment Directory: " +
-	// chooser.getSelectedFile().getAbsolutePath());
-	// return chooser.getSelectedFile().getAbsolutePath();
-	// }
-	// return "experimentBaseDirectory";
-	// }
-
-	/**
 	 * Cria um prompt para o user escolher onde estão os ficheiros ham.log,
 	 * spam.log e rules.cf
 	 * 
@@ -65,7 +45,7 @@ public class FileManager {
 	 *            directoria.
 	 * @return Pasta a usar para experimentBaseDirectory.
 	 */
-	public String FileFolderPrompt(Component parent) {
+	public String fileFolderPrompt(Component parent) {
 		// revisao possivel - permitir escolher ficheiros individualmente em vez
 		// de
 		// pasta inteira
@@ -100,19 +80,19 @@ public class FileManager {
 
 		for (File f : files) {
 			if (f.getName().contains("ham")) {
-				ham = Read(f);
+				ham = read(f);
 			}
 			if (f.getName().contains("spam")) {
-				spam = Read(f);
+				spam = read(f);
 			}
 			if (f.getName().contains("rules")) {
-				rules = Read(f);
+				rules = read(f);
 			}
 			if (f.getName().contains("AntiSpamFilterProblem.rf")) {
-				solutions = Read(f);
+				solutions = read(f);
 			}
 			if (f.getName().contains("AntiSpamFilterProblem.rs")) {
-				weights = Read(f);
+				weights = read(f);
 			}
 
 		}
@@ -124,8 +104,8 @@ public class FileManager {
 	 * @param file
 	 *            Ficheiro a ser lido.
 	 */
-	public ArrayList<String> Read(File file) {
-		lines = new ArrayList<String>();
+	public ArrayList<String> read(File file) {
+		fileLines = new ArrayList<String>();
 		if (file.exists()) {
 			Scanner scan = null;
 			try {
@@ -133,7 +113,7 @@ public class FileManager {
 				while (scan.hasNextLine()) {
 					String line = scan.nextLine();
 					if (line != null) {
-						lines.add(line);
+						fileLines.add(line);
 					}
 
 				}
@@ -142,7 +122,7 @@ public class FileManager {
 			} finally {
 				if (scan != null) {
 					scan.close();
-					return lines;
+					return fileLines;
 				}
 			}
 		} else {
@@ -152,7 +132,7 @@ public class FileManager {
 	}
 
 	/**
-	 * Cria um vetor de números aleatórios do tipo double num intervalo de
+	 * Cria um vetor de números aleatórios do tipo double num intervalo de 
 	 * [-5,5]
 	 * 
 	 */
@@ -166,8 +146,8 @@ public class FileManager {
 		return randomWeights;
 	}
 
-	public ArrayList<String> getLines() {
-		return lines;
+	public ArrayList<String> getfileLines() {
+		return fileLines;
 	}
 
 	public String getExecutionPath() {

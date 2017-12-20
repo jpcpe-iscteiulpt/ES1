@@ -50,14 +50,14 @@ public class AntiSpamFilterProblem extends AbstractDoubleProblem {
 	}
 
 	public int findRules(String s) {
-		int posicao = 0;
+		int ruleIndex = 0;
 
 		for (int i = 0; i < rules.size(); i++) {
 			if (rules.get(i).contains(s)) {
-				posicao = i;
+				ruleIndex = i;
 			}
 		}
-		return posicao;
+		return ruleIndex;
 	}
 
 	public void evaluate(DoubleSolution solution) {

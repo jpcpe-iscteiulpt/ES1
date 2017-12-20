@@ -23,13 +23,12 @@ public class FileManagerTest {
 
 	@Test
 	public void testFileFolderPrompt() {
-		assertNotNull("should not be null", fm.FileFolderPrompt(new JFrame()));
+		assertNotNull("should not be null", fm.fileFolderPrompt(new JFrame()));
 		assertEquals(fm.getChooser().showOpenDialog(new JFrame()), JFileChooser.APPROVE_OPTION);
 	}
 
 	@Test
 	public void testFolderParser() {
-//		fm.BaseDirectoryPrompt(new JFrame());
 		fm.folderParser(fm.getExecutionPath());
 		assertNotNull(fm.getHam());
 		assertNotNull(fm.getSpam());
@@ -38,8 +37,8 @@ public class FileManagerTest {
 
 	@Test
 	public void testRead() {
-		fm.Read(new File(""));
-		assertNotNull("should not be null", fm.getLines());
+		fm.read(new File(""));
+		assertNotNull("should not be null", fm.getfileLines());
 	}
 	
 	@Test
@@ -65,7 +64,7 @@ public class FileManagerTest {
 	public void testGenerateRandomWeights() {
 		ArrayList<String> testRandomWeightArray = fm.generateRandomWeights();
 		
-		assertNotNull("should not be null", testRandomWeightArray);
+		assertNotNull("should not be null ", testRandomWeightArray);
 		
 		for(int i = 0; i < testRandomWeightArray.size(); i++) {
 			assertFalse(Double.parseDouble(testRandomWeightArray.get(i)) < -5.00000);

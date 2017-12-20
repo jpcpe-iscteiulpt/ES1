@@ -32,8 +32,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.commons.lang3.ObjectUtils.Null;
-
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -47,10 +45,10 @@ import java.awt.event.ActionEvent;
 
 public class GUI {
 
-	private JFrame frmFiltroAntispam;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JFrame mainWindowFrame;
+	private JTextField falsePositivesTextField_AC;
+	private JTextField falseNegativesTextField_AC;
+	private JTextField hamFilePathTextField;
 	private String folder;
 	private File[] files;
 	private String executionPath;
@@ -68,7 +66,7 @@ public class GUI {
 
 	private DefaultListModel<String> model = new DefaultListModel<>();
 
-	private DefaultTableModel model2 = new DefaultTableModel();
+	private DefaultTableModel automaticConfigurationTableModel = new DefaultTableModel();
 
 	/**
 	 * Launch the application.
@@ -78,14 +76,12 @@ public class GUI {
 			public void run() {
 				try {
 					GUI window = new GUI();
-					window.frmFiltroAntispam.setVisible(true);
+					window.mainWindowFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-
-	
 	}
 
 	/**
@@ -100,160 +96,159 @@ public class GUI {
 	 */
 
 	private void initialize() {
-		frmFiltroAntispam = new JFrame();
-		frmFiltroAntispam.setTitle("Filtro Anti-Spam");
-		frmFiltroAntispam.setBounds(100, 100, 450, 300);
-		frmFiltroAntispam.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmFiltroAntispam.setLayout(new CardLayout(0, 0));
+		mainWindowFrame = new JFrame();
+		mainWindowFrame.setTitle("Filtro Anti-Spam");
+		mainWindowFrame.setBounds(100, 100, 450, 300);
+		mainWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainWindowFrame.setLayout(new CardLayout(0, 0));
 
-		// JPanel 1
-		JPanel panel1 = new JPanel();
-		panel1.setLayout(null);
-		frmFiltroAntispam.getContentPane().add(panel1);
-		panel1.setVisible(true);
+		// File path chooser panel
+		
+		JPanel filePathChooserPanel = new JPanel();
+		filePathChooserPanel.setLayout(null);
+		mainWindowFrame.getContentPane().add(filePathChooserPanel);
+		filePathChooserPanel.setVisible(true);
 
-		JLabel lblRulescf = new JLabel("Rules.cf");
-		lblRulescf.setBounds(60, 33, 79, 14);
-		panel1.add(lblRulescf);
+		JLabel rulesFileLabel = new JLabel("Rules.cf");
+		rulesFileLabel.setBounds(60, 33, 79, 14);
+		filePathChooserPanel.add(rulesFileLabel);
 
-		JTextField textFieldR = new JTextField();
-		textFieldR.setBounds(139, 30, 173, 20);
-		panel1.add(textFieldR);
-		textFieldR.setColumns(10);
-		textFieldR.setEditable(false);
+		JTextField rulesFilePathTextField = new JTextField();
+		rulesFilePathTextField.setBounds(139, 30, 173, 20);
+		filePathChooserPanel.add(rulesFilePathTextField);
+		rulesFilePathTextField.setColumns(10);
+		rulesFilePathTextField.setEditable(false);
 
-		JCheckBox rules_check = new JCheckBox("");
-		rules_check.setBounds(347, 30, 21, 21);
-		rules_check.setEnabled(false);
-		panel1.add(rules_check);
+		JCheckBox rulesFileEncountered = new JCheckBox("");
+		rulesFileEncountered.setBounds(347, 30, 21, 21);
+		rulesFileEncountered.setEnabled(false);
+		filePathChooserPanel.add(rulesFileEncountered);
 
-		JLabel lblSpamlog = new JLabel("Spam.log");
-		lblSpamlog.setBounds(60, 89, 69, 14);
-		panel1.add(lblSpamlog);
+		JLabel spamFileLabel = new JLabel("Spam.log");
+		spamFileLabel.setBounds(60, 89, 69, 14);
+		filePathChooserPanel.add(spamFileLabel);
 
-		JTextField textFieldS = new JTextField();
-		textFieldS.setBounds(139, 86, 173, 20);
-		panel1.add(textFieldS);
-		textFieldS.setColumns(10);
-		textFieldS.setEditable(false);
+		JTextField spamFilePathTextField = new JTextField();
+		spamFilePathTextField.setBounds(139, 86, 173, 20);
+		filePathChooserPanel.add(spamFilePathTextField);
+		spamFilePathTextField.setColumns(10);
+		spamFilePathTextField.setEditable(false);
 
-		JCheckBox spam_check = new JCheckBox("");
-		spam_check.setEnabled(false);
-		spam_check.setBounds(347, 86, 21, 21);
-		panel1.add(spam_check);
-		//
+		JCheckBox spamFileEncountered = new JCheckBox("");
+		spamFileEncountered.setEnabled(false);
+		spamFileEncountered.setBounds(347, 86, 21, 21);
+		filePathChooserPanel.add(spamFileEncountered);
 
-		JLabel lblHamlog = new JLabel("Ham.log");
-		lblHamlog.setBounds(62, 145, 67, 14);
-		panel1.add(lblHamlog);
+		JLabel hamFileLabel = new JLabel("Ham.log");
+		hamFileLabel.setBounds(62, 145, 67, 14);
+		filePathChooserPanel.add(hamFileLabel);
 
-		textField_2 = new JTextField();
-		textField_2.setBounds(139, 142, 173, 20);
-		panel1.add(textField_2);
-		textField_2.setColumns(10);
+		hamFilePathTextField = new JTextField();
+		hamFilePathTextField.setBounds(139, 142, 173, 20);
+		filePathChooserPanel.add(hamFilePathTextField);
+		hamFilePathTextField.setColumns(10);
+		hamFilePathTextField.setEditable(false);
 
-		//
-		textField_2.setEditable(false);
+		JCheckBox hamFileEncountered = new JCheckBox("");
+		hamFileEncountered.setEnabled(false);
+		hamFileEncountered.setBounds(347, 142, 21, 21);
+		filePathChooserPanel.add(hamFileEncountered);
 
-		JCheckBox ham_check = new JCheckBox("");
-		ham_check.setEnabled(false);
-		ham_check.setBounds(347, 142, 21, 21);
-		panel1.add(ham_check);
+		// Configuration type chooser panel
 
-		// JPanel 2
+		JPanel configurationTypeChooserPanel = new JPanel();
+		configurationTypeChooserPanel.setLayout(null);
+		mainWindowFrame.getContentPane().add(configurationTypeChooserPanel);
+		configurationTypeChooserPanel.setVisible(false);
+		
+		JLabel manualConfigurationLabel = new JLabel("Configura\u00E7\u00E3o Manual");
+		manualConfigurationLabel.setBounds(90, 53, 165, 14);
+		configurationTypeChooserPanel.add(manualConfigurationLabel);
 
-		JPanel panel2 = new JPanel();
-		panel2.setLayout(null);
-		frmFiltroAntispam.getContentPane().add(panel2);
-		panel2.setVisible(false);
-		JLabel lblConfiguraoManual = new JLabel("Configura\u00E7\u00E3o Manual");
-		lblConfiguraoManual.setBounds(90, 53, 165, 14);
-		panel2.add(lblConfiguraoManual);
+		JRadioButton chooseManualConfiguration = new JRadioButton("");
+		chooseManualConfiguration.setBounds(303, 46, 21, 21);
+		configurationTypeChooserPanel.add(chooseManualConfiguration);
 
-		JRadioButton manual_check = new JRadioButton("");
-		manual_check.setBounds(303, 46, 21, 21);
-		panel2.add(manual_check);
+		JLabel automaticConfigurationLabel = new JLabel("Configura\u00E7\u00E3o Autom\u00E1tica");
+		automaticConfigurationLabel.setBounds(90, 105, 181, 14);
+		configurationTypeChooserPanel.add(automaticConfigurationLabel);
 
-		JLabel lblConfiguraoAutomtica = new JLabel(
-				"Configura\u00E7\u00E3o Autom\u00E1tica");
-		lblConfiguraoAutomtica.setBounds(90, 105, 181, 14);
-		panel2.add(lblConfiguraoAutomtica);
+		JRadioButton chooseAutomaticConfiguration = new JRadioButton("");
+		chooseAutomaticConfiguration.setBounds(303, 102, 21, 21);
+		configurationTypeChooserPanel.add(chooseAutomaticConfiguration);
 
-		JRadioButton auto_check = new JRadioButton("");
-		auto_check.setBounds(303, 102, 21, 21);
-		panel2.add(auto_check);
+		ButtonGroup configurationTypeChooserButtonGroup = new ButtonGroup();
+		configurationTypeChooserButtonGroup.add(chooseManualConfiguration);
+		configurationTypeChooserButtonGroup.add(chooseAutomaticConfiguration);
 
-		ButtonGroup group = new ButtonGroup();
-		group.add(manual_check);
-		group.add(auto_check);
+		// Manual configuration panel
+		
+		JPanel manualConfigurationPanel = new JPanel();
+		manualConfigurationPanel.setLayout(null);
+		mainWindowFrame.getContentPane().add(manualConfigurationPanel);
+		manualConfigurationPanel.setVisible(false);
+		
+		JLabel manualConfigurationWindowTitle = new JLabel("Configura\u00E7\u00E3o Manual");
+		manualConfigurationWindowTitle.setBounds(165, 21, 145, 25);
+		manualConfigurationPanel.add(manualConfigurationWindowTitle);
 
-		// JPanel3
-		JPanel panel3 = new JPanel();
-		panel3.setLayout(null);
-		frmFiltroAntispam.getContentPane().add(panel3);
-		panel3.setVisible(false);
-		JLabel lblConfiguraoManual1 = new JLabel(
-				"Configura\u00E7\u00E3o Manual");
-		lblConfiguraoManual1.setBounds(165, 21, 145, 25);
-		panel3.add(lblConfiguraoManual1);
+		JLabel falsePositivesLabel_MC = new JLabel("Falsos Positivos");
+		falsePositivesLabel_MC.setBounds(50, 229, 120, 14);
+		manualConfigurationPanel.add(falsePositivesLabel_MC);
 
-		JLabel lblFalsosPositivos = new JLabel("Falsos Positivos");
-		lblFalsosPositivos.setBounds(50, 229, 120, 14);
-		panel3.add(lblFalsosPositivos);
+		JLabel falseNegativesLabel_MC = new JLabel("Falsos Negativos");
+		falseNegativesLabel_MC.setBounds(230, 229, 120, 14);
+		manualConfigurationPanel.add(falseNegativesLabel_MC);
 
-		JLabel lblFalsosNegativos = new JLabel("Falsos Negativos");
-		lblFalsosNegativos.setBounds(230, 229, 120, 14);
-		panel3.add(lblFalsosNegativos);
+		JTextField falsePositivesTextField_MC = new JTextField();
+		falsePositivesTextField_MC.setBounds(144, 226, 50, 20);
+		manualConfigurationPanel.add(falsePositivesTextField_MC);
+		falsePositivesTextField_MC.setColumns(10);
+		falsePositivesTextField_MC.setEditable(false);
 
-		JTextField textFieldm = new JTextField();
-		textFieldm.setBounds(144, 226, 50, 20);
-		panel3.add(textFieldm);
-		textFieldm.setColumns(10);
-		textFieldm.setEditable(false);
+		JTextField falseNegativesTextField_MC = new JTextField();
+		falseNegativesTextField_MC.setBounds(327, 226, 50, 20);
+		manualConfigurationPanel.add(falseNegativesTextField_MC);
+		falseNegativesTextField_MC.setColumns(10);
+		falseNegativesTextField_MC.setEditable(false);
 
-		JTextField textField_1m = new JTextField();
-		textField_1m.setBounds(327, 226, 50, 20);
-		panel3.add(textField_1m);
+		// Automatic configuration panel
 
-		textField_1m.setColumns(10);
-		textField_1m.setEditable(false);
+		JPanel automaticConfigurationPanel = new JPanel();
+		automaticConfigurationPanel.setLayout(null);
+		mainWindowFrame.getContentPane().add(automaticConfigurationPanel);
+		automaticConfigurationPanel.setVisible(false);
+		
+		JLabel automaticConfigurationWindowTitle = new JLabel("Configura\u00E7\u00E3o Autom\u00E1tica");
+		automaticConfigurationWindowTitle.setBounds(161, 11, 166, 25);
+		automaticConfigurationPanel.add(automaticConfigurationWindowTitle);
 
-		// JPanel4
+		JLabel falsePositivesLabel_AC = new JLabel("Falsos Positivos");
+		falsePositivesLabel_AC.setBounds(45, 219, 120, 14);
+		automaticConfigurationPanel.add(falsePositivesLabel_AC);
 
-		JPanel panel4 = new JPanel();
-		panel4.setLayout(null);
-		frmFiltroAntispam.getContentPane().add(panel4);
-		panel4.setVisible(false);
-		JLabel lblConfiguraoAutomtica1 = new JLabel(
-				"Configura\u00E7\u00E3o Autom\u00E1tica");
-		lblConfiguraoAutomtica1.setBounds(161, 11, 166, 25);
-		panel4.add(lblConfiguraoAutomtica1);
+		JLabel falseNegativesLabel_AC = new JLabel("Falsos Negativos");
+		falseNegativesLabel_AC.setBounds(225, 219, 120, 14);
+		automaticConfigurationPanel.add(falseNegativesLabel_AC);
 
-		JLabel label_1 = new JLabel("Falsos Positivos");
-		label_1.setBounds(45, 219, 120, 14);
-		panel4.add(label_1);
+		falsePositivesTextField_AC = new JTextField();
+		falsePositivesTextField_AC.setColumns(10);
+		falsePositivesTextField_AC.setBounds(140, 219, 50, 20);
+		falsePositivesTextField_AC.setEditable(false);
+		automaticConfigurationPanel.add(falsePositivesTextField_AC);
 
-		JLabel label_2 = new JLabel("Falsos Negativos");
-		label_2.setBounds(225, 219, 120, 14);
-		panel4.add(label_2);
+		falseNegativesTextField_AC = new JTextField();
+		falseNegativesTextField_AC.setColumns(10);
+		falseNegativesTextField_AC.setBounds(323, 219, 50, 20);
+		falseNegativesTextField_AC.setEditable(false);
+		automaticConfigurationPanel.add(falseNegativesTextField_AC);
 
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(140, 219, 50, 20);
-		textField.setEditable(false);
-		panel4.add(textField);
-
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(323, 219, 50, 20);
-		textField_1.setEditable(false);
-		panel4.add(textField_1);
-
-		// botões painel1
-		JButton btnEscolher = new JButton("Importar");
-		btnEscolher.setBounds(90, 188, 109, 23);
-		panel1.add(btnEscolher);
-		btnEscolher.addActionListener(new ActionListener() {
+		// File path chooser panel buttons
+		
+		JButton importFilesButton = new JButton("Importar");
+		importFilesButton.setBounds(90, 188, 109, 23);
+		filePathChooserPanel.add(importFilesButton);
+		importFilesButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -261,161 +256,152 @@ public class GUI {
 
 				fm = FileManager.getInstance();
 
-				folder = fm.FileFolderPrompt(getFrmFiltroAntispam());
+				folder = fm.fileFolderPrompt(getmainWindowFrame());
 
 				files = fm.getFiles();
-				boolean ham = false;
-				boolean spam = false;
-				boolean rules = false;
+				
+				boolean hamFound = false;
+				boolean spamFound = false;
+				boolean rulesFound = false;
+				
 				int hami = 0;
 				int spami = 0;
 				int rulesi = 0;
+				
 				int count = 0;
+				
 				for (File f : files) {
 					if (f.getName().contains("ham")) {
-						ham = true;
+						hamFound = true;
 						hami = count;
 					}
 					if (f.getName().contains("spam")) {
-						spam = true;
+						spamFound = true;
 						spami = count;
 					}
 					if (f.getName().contains("rules")) {
-						rules = true;
+						rulesFound = true;
 						rulesi = count;
 					}
 					count++;
 				}
-				if (rules) {
-					rules_check.setSelected(true);
-					textFieldR.setText(files[rulesi].getPath());
+				if (rulesFound) {
+					rulesFileEncountered.setSelected(true);
+					rulesFilePathTextField.setText(files[rulesi].getPath());
 				}
-				if (spam) {
-					spam_check.setSelected(true);
-					textFieldS.setText(files[spami].getPath());
+				if (spamFound) {
+					spamFileEncountered.setSelected(true);
+					spamFilePathTextField.setText(files[spami].getPath());
 				}
-				if (ham) {
-					ham_check.setSelected(true);
-					textField_2.setText(files[hami].getPath());
+				if (hamFound) {
+					hamFileEncountered.setSelected(true);
+					hamFilePathTextField.setText(files[hami].getPath());
 				}
 			}
 
 		});
-
-		JButton btnSeguinte = new JButton("Seguinte");
-		btnSeguinte.setBounds(215, 188, 109, 23);
-		btnSeguinte.addActionListener(new ActionListener() {
+		
+		JButton nextButton = new JButton("Seguinte");
+		nextButton.setBounds(215, 188, 109, 23);
+		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				if (rules_check.isSelected() && spam_check.isSelected()
-						&& ham_check.isSelected()) {
-					panel1.setVisible(false);
-					panel2.setVisible(true);
-					ham = fm.Read(files[0]);
-					rules = fm.Read(files[1]);
-					spam = fm.Read(files[2]);
+				if (rulesFileEncountered.isSelected() && spamFileEncountered.isSelected() && hamFileEncountered.isSelected()) {
+					filePathChooserPanel.setVisible(false);
+					configurationTypeChooserPanel.setVisible(true);
+					ham = fm.read(files[0]);
+					rules = fm.read(files[1]);
+					spam = fm.read(files[2]);
 
-					// Configuração manual
-					JPanel container = new JPanel();
-					container.setLayout(new BorderLayout());
-					panel3.add(container);
-					container.setBounds(50, 45, 377, 155);
-					String[] header = { "Regras", "Pesos" };
-					String[][] data = new String[rules.size()][2];
+					// Manual Configuration
+					
+					JPanel manualConfigurationTablePanel = new JPanel();
+					manualConfigurationTablePanel.setLayout(new BorderLayout());
+					manualConfigurationPanel.add(manualConfigurationTablePanel);
+					manualConfigurationTablePanel.setBounds(50, 45, 377, 155);
+					String[] tableHeaders = { "Regras", "Pesos" };
+					String[][] tableData = new String[rules.size()][2];
 					for (int i = 0; i < rules.size(); i++) {
-						data[i][0] = rules.get(i);
-						data[i][1] = fm.generateRandomWeights().get(i);
+						tableData[i][0] = rules.get(i);
+						tableData[i][1] = fm.generateRandomWeights().get(i);
 					}
 
-					DefaultTableModel model = new DefaultTableModel(data,
-							header);
+					DefaultTableModel manualConfigurationTableModel = new DefaultTableModel(tableData, tableHeaders);
 
-					JTable table = new JTable(model);
+					JTable manualConfigurationTable = new JTable(manualConfigurationTableModel);
 
-					table.getModel().addTableModelListener(
-							new TableModelListener() {
+					manualConfigurationTable.getModel().addTableModelListener(new TableModelListener() {
 
-								@Override
-								public void tableChanged(TableModelEvent e) {
-									for (int i = 0; i < rules.size(); i++) {
-										try {
+						@Override
+						public void tableChanged(TableModelEvent e) {
+							for (int i = 0; i < rules.size(); i++) {
+								try {
 
-											if (Double.parseDouble(model
-													.getValueAt(i, 1)
-													.toString()) > 5.0) {
-												JOptionPane
-														.showMessageDialog(
-																frmFiltroAntispam,
-																"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
-												model.setValueAt(5.0, i, 1);
-											}
-
-											if (Double.parseDouble(model
-													.getValueAt(i, 1)
-													.toString()) < -5.0) {
-												JOptionPane
-														.showMessageDialog(
-																frmFiltroAntispam,
-																"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
-												model.setValueAt(-5.0, i, 1);
-											}
-
-										} catch (NumberFormatException exception) {
-											JOptionPane
-													.showMessageDialog(
-															frmFiltroAntispam,
-															"Formato incorreto, insira um número!");
-											model.setValueAt(data[i][1], i, 1);
-										}
+									if (Double.parseDouble(manualConfigurationTableModel.getValueAt(i, 1).toString()) > 5.0) {
+										JOptionPane.showMessageDialog(mainWindowFrame,
+												"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
+										manualConfigurationTableModel.setValueAt(5.0, i, 1);
 									}
+
+									if (Double.parseDouble(manualConfigurationTableModel.getValueAt(i, 1).toString()) < -5.0) {
+										JOptionPane.showMessageDialog(mainWindowFrame,
+												"Valor inválido, por favor insira um valor entre -5.0 e 5.0");
+										manualConfigurationTableModel.setValueAt(-5.0, i, 1);
+									}
+
+								} catch (NumberFormatException exception) {
+									JOptionPane.showMessageDialog(mainWindowFrame,
+											"Formato incorreto, insira um número!");
+									manualConfigurationTableModel.setValueAt(tableData[i][1], i, 1);
 								}
-							});
+							}
+						}
+					});
 
-					container.add(table, BorderLayout.CENTER);
+					manualConfigurationTablePanel.add(manualConfigurationTable, BorderLayout.CENTER);
 
-					JScrollPane js = new JScrollPane(table);
-					js.setVisible(true);
-					container.add(js);
+					JScrollPane manualConfigurationScrollPane = new JScrollPane(manualConfigurationTable);
+					manualConfigurationScrollPane.setVisible(true);
+					manualConfigurationTablePanel.add(manualConfigurationScrollPane);
 
-					JButton evaluate = new JButton("Refazer");
-					evaluate.setBounds(190, 202, 80, 20);
-					panel3.add(evaluate);
+					JButton evaluateButton = new JButton("Avaliar");
+					evaluateButton.setBounds(190, 202, 80, 20);
+					manualConfigurationPanel.add(evaluateButton);
 
-					evaluate.addActionListener(new ActionListener() {
+					evaluateButton.addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							double[] pesos = new double[model.getRowCount()];
-							for (int i = 0; i < model.getRowCount(); i++) {
-								pesos[i] = Double.parseDouble(model.getValueAt(
-										i, 1).toString());
-								evaluate(textFieldm, textField_1m, pesos);
+							double[] pesos = new double[manualConfigurationTableModel.getRowCount()];
+							for (int i = 0; i < manualConfigurationTableModel.getRowCount(); i++) {
+								pesos[i] = Double.parseDouble(manualConfigurationTableModel.getValueAt(i, 1).toString());
+								evaluate(falsePositivesTextField_MC, falseNegativesTextField_MC, pesos);
 							}
 
 						}
 
 					});
 
-					// Configuração automática
+					// Automatic configuration
 
-					JPanel container2 = new JPanel();
-					container2.setLayout(new BorderLayout());
-					panel4.add(container2);
-					container2.setBounds(50, 45, 377, 170);
+					JPanel automaticConfigurationTablePanel = new JPanel();
+					automaticConfigurationTablePanel.setLayout(new BorderLayout());
+					automaticConfigurationPanel.add(automaticConfigurationTablePanel);
+					automaticConfigurationTablePanel.setBounds(50, 45, 377, 170);
 
-					String[][] data2 = new String[rules.size()][2];
-					String[] header2 = { "Regras", "Pesos" };
-					data2 = new String[rules.size()][2];
+					String[][] automaticConfigurationTableData = new String[rules.size()][2];
+					String[] automaticConfigurationTableHeaders = { "Regras", "Pesos" };
+					automaticConfigurationTableData = new String[rules.size()][2];
 					for (int i = 0; i < rules.size(); i++) {
-						data2[i][0] = rules.get(i);
+						automaticConfigurationTableData[i][0] = rules.get(i);
 						if (solutionSelection == -1) {
-							data2[i][1] = " ";
+							automaticConfigurationTableData[i][1] = " ";
 						} else {
-							data2[i][1] = fm.getWeights().get(0).split(" ")[i];
+							automaticConfigurationTableData[i][1] = fm.getWeights().get(0).split(" ")[i];
 						}
 					}
 
-					model2 = new DefaultTableModel(data2, header2) {
+					automaticConfigurationTableModel = new DefaultTableModel(automaticConfigurationTableData, automaticConfigurationTableHeaders) {
 						@Override
 						public boolean isCellEditable(int row, int column) {
 							// all cells false
@@ -423,21 +409,21 @@ public class GUI {
 						}
 					};
 
-					JTable table2 = new JTable(model2);
-					container2.add(table2, BorderLayout.CENTER);
-					table2.setEnabled(false);
-					JScrollPane js2 = new JScrollPane(table2);
-					js.setVisible(true);
-					container2.add(js2);
+					JTable automaticConfigurationTable = new JTable(automaticConfigurationTableModel);
+					automaticConfigurationTablePanel.add(automaticConfigurationTable, BorderLayout.CENTER);
+					automaticConfigurationTable.setEnabled(false);
+					
+					JScrollPane automaticConfigurationScrollPane = new JScrollPane(automaticConfigurationTable);
+					manualConfigurationScrollPane.setVisible(true);
+					automaticConfigurationTablePanel.add(automaticConfigurationScrollPane);
 
 					JPanel autoConfigurationButtonPanel = new JPanel();
-					autoConfigurationButtonPanel
-							.setLayout(new GridLayout(0, 2));
+					autoConfigurationButtonPanel.setLayout(new GridLayout(0, 2));
 
-					JButton runAuto = new JButton("Iniciar");
-					runAuto.setBounds(190, 240, 80, 20);
+					JButton runAutomaticConfiguration = new JButton("Iniciar");
+					runAutomaticConfiguration.setBounds(190, 240, 80, 20);
 
-					runAuto.addActionListener(new ActionListener() {
+					runAutomaticConfiguration.addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
@@ -456,134 +442,106 @@ public class GUI {
 
 					JButton saveBestSolutionToFile = new JButton("Guardar");
 
-					saveBestSolutionToFile
-							.addActionListener(new ActionListener() {
+					saveBestSolutionToFile.addActionListener(new ActionListener() {
 
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									writeBestSolutionWeightsToFile();
-								}
-							});
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							writeBestSolutionWeightsToFile();
+						}
+					});
 
-					autoConfigurationButtonPanel.add(runAuto);
+					autoConfigurationButtonPanel.add(runAutomaticConfiguration);
 					autoConfigurationButtonPanel.add(saveBestSolutionToFile);
-					container2.add(autoConfigurationButtonPanel,
-							BorderLayout.SOUTH);
+					automaticConfigurationTablePanel.add(autoConfigurationButtonPanel, BorderLayout.SOUTH);
 
 				} else {
-					JOptionPane.showMessageDialog(frmFiltroAntispam,
-							"Por favor preencha todos os campos.");
+					JOptionPane.showMessageDialog(mainWindowFrame, "Por favor preencha todos os campos.");
 				}
 
 			}
 		});
-		panel1.add(btnSeguinte);
+		filePathChooserPanel.add(nextButton);
 
-		// botões painel2
-		JButton btnAnterior2 = new JButton("Anterior");
-		btnAnterior2.setBounds(90, 188, 109, 23);
-		panel2.add(btnAnterior2);
-		btnAnterior2.addActionListener(new ActionListener() {
+		// Configuration type chooser buttons
+		
+		JButton configurationTypeChooserBackButton = new JButton("Anterior");
+		configurationTypeChooserBackButton.setBounds(90, 188, 109, 23);
+		configurationTypeChooserPanel.add(configurationTypeChooserBackButton);
+		configurationTypeChooserBackButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				panel2.setVisible(false);
-				panel1.setVisible(true);
+				configurationTypeChooserPanel.setVisible(false);
+				filePathChooserPanel.setVisible(true);
 
 			}
 
 		});
 
-		JButton btnSeguinte2 = new JButton("Seguinte");
-		btnSeguinte2.setBounds(215, 188, 109, 23);
-		panel2.add(btnSeguinte2);
-		btnSeguinte2.addActionListener(new ActionListener() {
+		JButton configurationTypeChooserNextButton = new JButton("Seguinte");
+		configurationTypeChooserNextButton.setBounds(215, 188, 109, 23);
+		configurationTypeChooserPanel.add(configurationTypeChooserNextButton);
+		configurationTypeChooserNextButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (manual_check.isSelected()) {
-					panel2.setVisible(false);
-					panel3.setVisible(true);
-				} else if (auto_check.isSelected()) {
-					panel2.setVisible(false);
-					panel4.setVisible(true);
+				if (chooseManualConfiguration.isSelected()) {
+					configurationTypeChooserPanel.setVisible(false);
+					manualConfigurationPanel.setVisible(true);
+				} else if (chooseAutomaticConfiguration.isSelected()) {
+					configurationTypeChooserPanel.setVisible(false);
+					automaticConfigurationPanel.setVisible(true);
 				}
 
 			}
 
 		});
 
-	}
-	
-	public void generateGraphic(){
-		String[] params = new String[2];
-		String[] envp = new String[1];
-
-		params[0] = "C:\\Program Files\\R\\R-3.4.3\\bin\\x64\\Rscript.exe";
-		params[1] = "experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
-		envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
-
-//		System.out.println(params[0]);
-//		System.out.println(params[1]);
-//		System.out.println(envp[0]);
-
-		try {
-			Process p = Runtime
-					.getRuntime()
-					.exec(params,
-							envp,
-							new File(
-									"experimentBaseDirectory\\AntiSpamStudy\\R"));
-		} catch (IOException e) {
-			System.out
-					.println("Erro a gerar os gráficos R");
-		}
 	}
 
 	public int findRules(String s) {
-		int posicao = 0;
+		int ruleIndex = 0;
 
 		for (int i = 0; i < rules.size(); i++) {
 			if (rules.get(i).contains(s)) {
-				posicao = i;
+				ruleIndex = i;
 			}
 		}
-		return posicao;
+		return ruleIndex;
 	}
 
-	public void evaluate(JTextField fpt, JTextField fnt, double[] x) {
-		int fp = 0;
+	public void evaluate(JTextField falsePositiveTextField, JTextField falseNegativeTextField, double[] x) {
+		int falsePositives = 0;
 		for (int i = 0; i < ham.size(); i++) {
-			double acumulator = 0;
-			String[] line = ham.get(i).split("\t");
-			for (int j = 1; j < line.length; j++) {
-				// System.out.println(j+" "+ line[j]);
-				int position = findRules(line[j]);
-				acumulator += x[position];
+			double threshold = 0;
+			String[] hamFileLine = ham.get(i).split("\t");
+			for (int j = 1; j < hamFileLine.length; j++) {
+				int rulePosition = findRules(hamFileLine[j]);
+				threshold += x[rulePosition];
 			}
-			if (acumulator >= 5) {
-				fp++;
+			if (threshold >= 5) {
+				falsePositives++;
 			}
 		}
 
-		int fn = 0;
+		int falseNegatives = 0;
 		for (int i = 0; i < spam.size(); i++) {
-			double acumulator = 0;
-			String[] line = spam.get(i).split("\t");
-			for (int j = 1; j < line.length; j++) {
-				int position = findRules(line[j]);
-				acumulator += x[position];
+			double threshold = 0;
+			String[] spamFileLine = spam.get(i).split("\t");
+			for (int j = 1; j < spamFileLine.length; j++) {
+				int rulePosition = findRules(spamFileLine[j]);
+				threshold += x[rulePosition];
 			}
-			if (acumulator < 5) {
-				fn++;
+			if (threshold < 5) {
+				falseNegatives++;
 			}
 		}
-		fpt.setText(String.valueOf(fp));
-		fnt.setText(String.valueOf(fn));
-		fpt.revalidate();
-		fnt.revalidate();
+		falsePositiveTextField.setText(String.valueOf(falsePositives));
+		falseNegativeTextField.setText(String.valueOf(falseNegatives));
+		falsePositiveTextField.revalidate();
+		falseNegativeTextField.revalidate();
 	}
-
+	
 	public void displaySolutions() {
 		fm.folderParser(Paths
 				.get(System.getProperty("user.home"),
@@ -655,11 +613,11 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for (int i = 0; i < rules.size(); i++) {
-					model2.setValueAt(fm.getWeights().get(solutionSelection)
+					automaticConfigurationTableModel.setValueAt(fm.getWeights().get(solutionSelection)
 							.split(" ")[i], i, 1);
-					textField.setText(fm.getSolutions().get(solutionSelection)
+					falsePositivesTextField_AC.setText(fm.getSolutions().get(solutionSelection)
 							.split(" ")[0]);
-					textField_1.setText(fm.getSolutions()
+					falseNegativesTextField_AC.setText(fm.getSolutions()
 							.get(solutionSelection).split(" ")[1]);
 				}
 			}
@@ -667,9 +625,32 @@ public class GUI {
 
 		solutionFrame.setVisible(true);
 		solutionFrame.setLocationRelativeTo(null);
-		// solutionFrame.pack();
 	}
 
+	public void generateGraphic(){
+		String[] params = new String[2];
+		String[] envp = new String[1];
+
+		params[0] = "C:\\Program Files\\R\\R-3.4.3\\bin\\x64\\Rscript.exe";
+		params[1] = "experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
+		envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
+		try {
+			Process p = Runtime
+					.getRuntime()
+					.exec(params,
+							envp,
+							new File(
+									"experimentBaseDirectory\\AntiSpamStudy\\R"));
+		} catch (IOException e) {
+			System.out
+					.println("Erro a gerar os gráficos R");
+		}
+	}
+	/**
+	 * 
+	 * Escreve o vetor de pesos de uma solução a escolha do utilizador para o ficheiro rules.cf
+	 * 
+	 */
 	private void writeBestSolutionWeightsToFile() {
 
 		try {
@@ -692,36 +673,36 @@ public class GUI {
 
 	}
 
-	public JFrame getFrmFiltroAntispam() {
-		return frmFiltroAntispam;
+	public JFrame getmainWindowFrame() {
+		return mainWindowFrame;
 	}
 
-	public void setFrmFiltroAntispam(JFrame frmFiltroAntispam) {
-		this.frmFiltroAntispam = frmFiltroAntispam;
+	public void setmainWindowFrame(JFrame mainWindowFrame) {
+		this.mainWindowFrame = mainWindowFrame;
 	}
 
 	public JTextField getTextField() {
-		return textField;
+		return falsePositivesTextField_AC;
 	}
 
 	public void setTextField(JTextField textField) {
-		this.textField = textField;
+		this.falsePositivesTextField_AC = textField;
 	}
 
 	public JTextField getTextField_1() {
-		return textField_1;
+		return falseNegativesTextField_AC;
 	}
 
 	public void setTextField_1(JTextField textField_1) {
-		this.textField_1 = textField_1;
+		this.falseNegativesTextField_AC = textField_1;
 	}
 
 	public JTextField getTextField_2() {
-		return textField_2;
+		return hamFilePathTextField;
 	}
 
 	public void setTextField_2(JTextField textField_2) {
-		this.textField_2 = textField_2;
+		this.hamFilePathTextField = textField_2;
 	}
 
 }
