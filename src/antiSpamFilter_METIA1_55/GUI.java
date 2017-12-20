@@ -69,7 +69,7 @@ public class GUI {
 	private DefaultTableModel automaticConfigurationTableModel = new DefaultTableModel();
 
 	/**
-	 * Launch the application.
+	 * Começar a aplicação.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -85,14 +85,14 @@ public class GUI {
 	}
 
 	/**
-	 * Create the application.
+	 * Construtor da aplicação, que a inicia.
 	 */
 	public GUI() {
 		initialize();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Inicializa os conteúdos do GUI.
 	 */
 
 	private void initialize() {
@@ -102,7 +102,7 @@ public class GUI {
 		mainWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainWindowFrame.setLayout(new CardLayout(0, 0));
 
-		// File path chooser panel
+		// Painel para escolher a pasta dos ficheiros ham, spam e rules
 
 		JPanel filePathChooserPanel = new JPanel();
 		filePathChooserPanel.setLayout(null);
@@ -154,7 +154,7 @@ public class GUI {
 		hamFileEncountered.setBounds(347, 142, 21, 21);
 		filePathChooserPanel.add(hamFileEncountered);
 
-		// Configuration type chooser panel
+		// Painel de escolha do tipo de configuração
 
 		JPanel configurationTypeChooserPanel = new JPanel();
 		configurationTypeChooserPanel.setLayout(null);
@@ -181,7 +181,7 @@ public class GUI {
 		configurationTypeChooserButtonGroup.add(chooseManualConfiguration);
 		configurationTypeChooserButtonGroup.add(chooseAutomaticConfiguration);
 
-		// Manual configuration panel
+		// Painel de configuração manual
 
 		JPanel manualConfigurationPanel = new JPanel();
 		manualConfigurationPanel.setLayout(null);
@@ -212,7 +212,7 @@ public class GUI {
 		falseNegativesTextField_MC.setColumns(10);
 		falseNegativesTextField_MC.setEditable(false);
 
-		// Automatic configuration panel
+		// Painel de confirugação automática
 
 		JPanel automaticConfigurationPanel = new JPanel();
 		automaticConfigurationPanel.setLayout(null);
@@ -243,7 +243,7 @@ public class GUI {
 		falseNegativesTextField_AC.setEditable(false);
 		automaticConfigurationPanel.add(falseNegativesTextField_AC);
 
-		// File path chooser panel buttons
+		// Butões de escolha do painel de escolha dos ficheiros ham, spam e rules
 
 		JButton importFilesButton = new JButton("Importar");
 		importFilesButton.setBounds(90, 188, 109, 23);
@@ -386,7 +386,7 @@ public class GUI {
 
 					});
 
-					// Automatic configuration
+					// Confirugação automática
 
 					JPanel automaticConfigurationTablePanel = new JPanel();
 					automaticConfigurationTablePanel.setLayout(new BorderLayout());
@@ -468,7 +468,7 @@ public class GUI {
 		});
 		filePathChooserPanel.add(nextButton);
 
-		// Configuration type chooser buttons
+		// Butões do painel de escolha do tipo configuração
 
 		JButton configurationTypeChooserBackButton = new JButton("Anterior");
 		configurationTypeChooserBackButton.setBounds(90, 188, 109, 23);
@@ -602,8 +602,8 @@ public class GUI {
 
 		for (int i = 0; i < fm.getSolutions().size(); i++) {
 			model.addElement(fm.getSolutions().get(i));
-			if (Double.parseDouble(fm.getSolutions().get(i).split("\\s+")[1]) < Double
-					.parseDouble(fm.getSolutions().get(s).split("\\s+")[1])) {
+			if (Double.parseDouble(fm.getSolutions().get(i).split("\\s+")[0]) < Double
+					.parseDouble(fm.getSolutions().get(s).split("\\s+")[0])) {
 				s = i;
 			}
 		}
