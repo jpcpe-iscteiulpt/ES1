@@ -35,8 +35,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -64,7 +67,15 @@ public class GUI {
 
 	private int solutionSelection = -1;
 
+	private int numberOfTimesPressed_AC = 0;
+	private int numberOfTimesPressed_MC = 0;
+
 	private DefaultListModel<String> model = new DefaultListModel<>();
+	private DefaultTableModel manualConfigurationTableModel;
+
+	public DefaultTableModel getManualConfigurationTableModel() {
+		return manualConfigurationTableModel;
+	}
 
 	private DefaultTableModel automaticConfigurationTableModel = new DefaultTableModel();
 
@@ -327,7 +338,7 @@ public class GUI {
 						tableData[i][1] = fm.generateRandomWeights().get(i);
 					}
 
-					DefaultTableModel manualConfigurationTableModel = new DefaultTableModel(tableData, tableHeaders);
+					manualConfigurationTableModel = new DefaultTableModel(tableData, tableHeaders);
 
 					JTable manualConfigurationTable = new JTable(manualConfigurationTableModel);
 
@@ -367,9 +378,27 @@ public class GUI {
 					manualConfigurationScrollPane.setVisible(true);
 					manualConfigurationTablePanel.add(manualConfigurationScrollPane);
 
+					JPanel manualConfigurationButtonPanel = new JPanel();
+					manualConfigurationButtonPanel.setLayout(new GridLayout(0, 2));
+					
+					JButton saveButton = new JButton("Guardar");
+					
+					saveButton.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							writeBestSolutionWeightsToFile_MC();					
+						}
+					});
+					
 					JButton evaluateButton = new JButton("Avaliar");
-					evaluateButton.setBounds(190, 202, 80, 20);
-					manualConfigurationPanel.add(evaluateButton);
+					
+					manualConfigurationButtonPanel.add(evaluateButton);
+					manualConfigurationButtonPanel.add(saveButton);
+					
+					manualConfigurationTablePanel.add(manualConfigurationButtonPanel, BorderLayout.SOUTH);
+					
+					
 
 					evaluateButton.addActionListener(new ActionListener() {
 
@@ -380,12 +409,17 @@ public class GUI {
 								pesos[i] = Double
 										.parseDouble(manualConfigurationTableModel.getValueAt(i, 1).toString());
 								evaluate(falsePositivesTextField_MC, falseNegativesTextField_MC, pesos);
+								
 							}
 
 						}
 
 					});
 
+					manualConfigurationButtonPanel.add(evaluateButton);
+					manualConfigurationButtonPanel.add(saveButton);
+					manualConfigurationTablePanel.add(manualConfigurationButtonPanel, BorderLayout.SOUTH);
+					
 					// Confirugação automática
 
 					JPanel automaticConfigurationTablePanel = new JPanel();
@@ -452,7 +486,7 @@ public class GUI {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							writeBestSolutionWeightsToFile();
+							writeBestSolutionWeightsToFile_AC();
 						}
 					});
 
@@ -504,9 +538,12 @@ public class GUI {
 		});
 
 	}
+
 	/**
 	 * Percorre o ficheiro rules e retorna a posição de uma determinada regra
-	 * @param s - regra a procurar
+	 * 
+	 * @param s
+	 *            - regra a procurar
 	 * @return ruleIndex - posição da regra no vector rules
 	 */
 	public int findRules(String s) {
@@ -520,12 +557,15 @@ public class GUI {
 		return ruleIndex;
 	}
 
-	
 	/**
 	 * método para determinar o númerop de falsos positivos e falsos negativos
-	 * @param falsePositiveTextField - textfield onde são representados os falsos positivos na janela
-	 * @param falseNegativeTextField - textfield onde são representados os falsos negativos na janela
-	 * @param x - vector com os pesos gerados
+	 * 
+	 * @param falsePositiveTextField
+	 *            - textfield onde são representados os falsos positivos na janela
+	 * @param falseNegativeTextField
+	 *            - textfield onde são representados os falsos negativos na janela
+	 * @param x
+	 *            - vector com os pesos gerados
 	 */
 	public void evaluate(JTextField falsePositiveTextField, JTextField falseNegativeTextField, double[] x) {
 		int falsePositives = 0;
@@ -560,11 +600,11 @@ public class GUI {
 	}
 
 	/**
-	 * Método para criar uma janela que mostra as soluções geradas pelo
-	 * algoritmo NSGAII e permitir ao utilizador escolher a que pretende usar. A
-	 * solução óptima é indicada por defeito
+	 * Método para criar uma janela que mostra as soluções geradas pelo algoritmo
+	 * NSGAII e permitir ao utilizador escolher a que pretende usar. A solução
+	 * óptima é indicada por defeito
 	 */
-	
+
 	public void displaySolutions() {
 		fm.folderParser(Paths
 				.get(System.getProperty("user.home"), "git/ES1-2017-METIA1-55/experimentBaseDirectory/referenceFronts")
@@ -609,7 +649,7 @@ public class GUI {
 			}
 		}
 		solutionSelection = s;
-		
+
 		JList solutionList = new JList<>(model);
 		solutionList.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		solutionMainPanel.add(solutionList);
@@ -648,7 +688,7 @@ public class GUI {
 	/**
 	 * Método para gerar o ficheiro do gráfico R
 	 */
-	
+
 	public void generateGraphic() {
 		String[] params = new String[2];
 		String[] envp = new String[1];
@@ -657,7 +697,8 @@ public class GUI {
 		params[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
 		envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
 		try {
-			Process p = Runtime.getRuntime().exec(params, envp, new File("C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R"));
+			Process p = Runtime.getRuntime().exec(params, envp,
+					new File("C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R"));
 		} catch (IOException e) {
 			System.out.println("Erro a gerar os gráficos R");
 		}
@@ -674,7 +715,6 @@ public class GUI {
 		paramsLatex[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\latex\\AntiSpamStudy.tex";
 		envpLatex[0] = "Path = C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64";
 
-
 		try {
 			Process p = Runtime.getRuntime().exec(paramsLatex, envpLatex, new File(
 					"C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\latex"));
@@ -689,23 +729,84 @@ public class GUI {
 	 * ficheiro rules.cf
 	 * 
 	 */
-	private void writeBestSolutionWeightsToFile() {
+	private void writeBestSolutionWeightsToFile_AC() {
+		if (numberOfTimesPressed_AC == 0) {
+			try {
+				BufferedWriter writeToConfigurationFile = new BufferedWriter(new FileWriter(
+						new File("C:/Users/Joao/git/ES1-2017-METIA1-55/AntiSpamConfigurationForProfessionalMailbox"
+								+ "/rules.cf")));
+				String[] chosenSolutionWeights = fm.getWeights().get(solutionSelection).split(" ");
 
-		try {
-			BufferedWriter writeToConfigurationFile = new BufferedWriter(
-					new FileWriter(new File(fm.getExecutionPath() + "/rules.cf")));
-			String[] chosenSolutionWeights = fm.getWeights().get(solutionSelection).split(" ");
+				for (int i = 0; i < rules.size(); i++) {
 
-			for (int i = 0; i < rules.size(); i++) {
-
-				writeToConfigurationFile.write(rules.get(i) + "\t" + chosenSolutionWeights[i] + "\n");
+					writeToConfigurationFile.write(rules.get(i) + "\t" + chosenSolutionWeights[i] + "\n");
+				}
+				writeToConfigurationFile.close();
+				numberOfTimesPressed_AC++;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			writeToConfigurationFile.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}else {
+			try {
+				BufferedWriter writeToConfigurationFile = new BufferedWriter(new FileWriter(
+						new File("C:/Users/Joao/git/ES1-2017-METIA1-55/AntiSpamConfigurationForProfessionalMailbox"
+								+ "/rules.cf")));
+				
+				String[] chosenSolutionWeights = fm.getWeights().get(solutionSelection).split(" ");
+				
+				for (int i = 0; i < rules.size(); i++) {
+					ArrayList<String> rules = fm.getRules();
+					writeToConfigurationFile.write(rules.get(i) + "\t" + chosenSolutionWeights[i] + "\n");
+				}
+				writeToConfigurationFile.close();
+				numberOfTimesPressed_AC++;
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
+		
+	}
+	
+	private void writeBestSolutionWeightsToFile_MC() {
+		if (numberOfTimesPressed_MC == 0) {
+			try {
+				BufferedWriter writeToConfigurationFile = new BufferedWriter(new FileWriter(
+						new File("C:/Users/Joao/git/ES1-2017-METIA1-55/AntiSpamConfigurationForProfessionalMailbox"
+								+ "/rules.cf")));
+				
+				for (int i = 0; i < rules.size(); i++) {
+					writeToConfigurationFile.write(rules.get(i) + "\t" + getManualConfigurationTableModel().getValueAt(i, 1).toString() + "\n");
+				}
+				writeToConfigurationFile.close();
+				numberOfTimesPressed_MC++;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				BufferedWriter writeToConfigurationFile = new BufferedWriter(new FileWriter(
+						new File("C:/Users/Joao/git/ES1-2017-METIA1-55/AntiSpamConfigurationForProfessionalMailbox"
+								+ "/rules.cf")));
+				
+				for (int i = 0; i < rules.size(); i++) {
+					ArrayList<String> rules = fm.getRules();
+					writeToConfigurationFile.write(rules.get(i) + "\t" + getManualConfigurationTableModel().getValueAt(i, 1).toString() + "\n");
+				}
+				writeToConfigurationFile.close();
+				numberOfTimesPressed_MC++;
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		
 	}
 
 	public JFrame getmainWindowFrame() {
