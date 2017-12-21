@@ -609,8 +609,7 @@ public class GUI {
 			}
 		}
 		solutionSelection = s;
-		System.out.println(solutionSelection);
-
+		
 		JList solutionList = new JList<>(model);
 		solutionList.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		solutionMainPanel.add(solutionList);
@@ -674,9 +673,6 @@ public class GUI {
 		paramsLatex[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\latex\\AntiSpamStudy.tex";
 		envpLatex[0] = "Path = C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64";
 
-		System.out.println(paramsLatex[0]);
-		System.out.println(paramsLatex[1]);
-		System.out.println(envpLatex[0]);
 
 		try {
 			Process p = Runtime.getRuntime().exec(paramsLatex, envpLatex, new File(
