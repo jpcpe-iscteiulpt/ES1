@@ -733,7 +733,7 @@ public class GUI {
 		if (numberOfTimesPressed_AC == 0) {
 			try {
 				BufferedWriter writeToConfigurationFile = new BufferedWriter(new FileWriter(
-						new File("C:/Users/Joao/git/ES1-2017-METIA1-55/AntiSpamConfigurationForProfessionalMailbox"
+						new File(System.getProperty("user.dir") + "/AntiSpamConfigurationForProfessionalMailbox"
 								+ "/rules.cf")));
 				String[] chosenSolutionWeights = fm.getWeights().get(solutionSelection).split(" ");
 
@@ -750,7 +750,7 @@ public class GUI {
 		}else {
 			try {
 				BufferedWriter writeToConfigurationFile = new BufferedWriter(new FileWriter(
-						new File("C:/Users/Joao/git/ES1-2017-METIA1-55/AntiSpamConfigurationForProfessionalMailbox"
+						new File(System.getProperty("user.dir") + "/AntiSpamConfigurationForProfessionalMailbox"
 								+ "/rules.cf")));
 				
 				String[] chosenSolutionWeights = fm.getWeights().get(solutionSelection).split(" ");
@@ -775,7 +775,7 @@ public class GUI {
 		if (numberOfTimesPressed_MC == 0) {
 			try {
 				BufferedWriter writeToConfigurationFile = new BufferedWriter(new FileWriter(
-						new File("C:/Users/Joao/git/ES1-2017-METIA1-55/AntiSpamConfigurationForProfessionalMailbox"
+						new File(System.getProperty("user.dir") + "/AntiSpamConfigurationForProfessionalMailbox"
 								+ "/rules.cf")));
 				
 				for (int i = 0; i < rules.size(); i++) {
@@ -790,8 +790,7 @@ public class GUI {
 		}else {
 			try {
 				BufferedWriter writeToConfigurationFile = new BufferedWriter(new FileWriter(
-						new File("C:/Users/Joao/git/ES1-2017-METIA1-55/AntiSpamConfigurationForProfessionalMailbox"
-								+ "/rules.cf")));
+						new File(System.getProperty("user.dir") + "/AntiSpamConfigurationForProfessionalMailbox" + "/rules.cf")));
 				
 				for (int i = 0; i < rules.size(); i++) {
 					ArrayList<String> rules = fm.getRules();
