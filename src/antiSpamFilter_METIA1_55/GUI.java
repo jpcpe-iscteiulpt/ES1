@@ -655,7 +655,7 @@ public class GUI {
 		String[] envp = new String[1];
 
 		params[0] = "C:\\Program Files\\R\\R-3.4.3\\bin\\x64\\Rscript.exe";
-		params[1] = "experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
+		params[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
 		envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
 		try {
 			Process p = Runtime.getRuntime().exec(params, envp, new File("experimentBaseDirectory\\AntiSpamStudy\\R"));
@@ -671,7 +671,7 @@ public class GUI {
 		String[] paramsLatex = new String[2];
 		String[] envpLatex = new String[1];
 		paramsLatex[0] = "C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64\\pdflatex.exe";
-		paramsLatex[1] = "experimentBaseDirectory\\AntiSpamStudy\\latex\\AntiSpamStudy.tex";
+		paramsLatex[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\latex\\AntiSpamStudy.tex";
 		envpLatex[0] = "Path = C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64";
 
 		System.out.println(paramsLatex[0]);
