@@ -657,7 +657,7 @@ public class GUI {
 		params[1] = "C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R\\HV.Boxplot.R";
 		envp[0] = "Path = C:\\Program Files\\R\\R-3.4.3\\bin\\x64";
 		try {
-			Process p = Runtime.getRuntime().exec(params, envp, new File("experimentBaseDirectory\\AntiSpamStudy\\R"));
+			Process p = Runtime.getRuntime().exec(params, envp, new File("C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\R"));
 		} catch (IOException e) {
 			System.out.println("Erro a gerar os gráficos R");
 		}
@@ -677,7 +677,7 @@ public class GUI {
 
 		try {
 			Process p = Runtime.getRuntime().exec(paramsLatex, envpLatex, new File(
-					"experimentBaseDirectory\\AntiSpamStudy\\latex"));
+					"C:\\Users\\sara\\git\\ES1-2017-METIA1-55\\experimentBaseDirectory\\AntiSpamStudy\\latex"));
 		} catch (IOException e) {
 			System.out.println("Erro a gerar o latex");
 		}
