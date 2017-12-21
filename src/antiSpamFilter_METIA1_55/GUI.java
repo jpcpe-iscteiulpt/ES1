@@ -663,8 +663,9 @@ public class GUI {
 		}
 	}
 
-	// Devolve o latex
-
+	/**
+	 * Método para gerar o pdf do latex
+	 */
 	public void generateLatex() {
 
 		String[] paramsLatex = new String[2];
