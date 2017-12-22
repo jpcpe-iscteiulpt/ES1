@@ -790,7 +790,7 @@ public class GUI {
 		}else {
 			try {
 				BufferedWriter writeToConfigurationFile = new BufferedWriter(new FileWriter(
-						new File(System.getProperty("user.dir") + "/AntiSpamConfigurationForProfessionalMailbox" + "/rules.cf")));
+						new File("C:\\Users\\metal_000\\git\\ES1-2017-METIA1-55\\AntiSpamConfigurationForProfessionalMailbox\\rules.cf")));
 				
 				for (int i = 0; i < rules.size(); i++) {
 					ArrayList<String> rules = fm.getRules();
