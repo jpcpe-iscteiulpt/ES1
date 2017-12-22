@@ -89,24 +89,40 @@ public class AntiSpamFilterProblemTest {
 		}
 	};
 
+	/**
+	 * 
+	 * Teste para verificar que as soluções são colocadas corretamente.
+	 * 
+	 */
 	@Test
 	public void testSetSolution(){
 		asfp.setSolution(solution);
 		assertEquals(asfp.getSolution(), solution);
 	}
 	
+	/**
+	 * 
+	 * Teste para verificar que o método findRules() devolve com sucesso a posição de uma determinada regra e que 
+	 * a mesma não é nula.
+	 * 
+	 */
 	@Test
 	public void testFindRules() {
 		assertNotNull("Should not be null", asfp.findRules(new String()));
 	}
 
+	/**
+	 * 
+	 * Teste para verificar que as soluções geradas pelo método evaluate() não são nulas.
+	 * 
+	 */
 	@Test
 	public void testEvaluate() {
 		asfp.evaluate(solution);
 		assertNotNull("Should not be null", asfp.getSolution());
 		
-		assertNotNull("ShouldNotBeNull", asfp.getSolution().getObjective(0));
-		assertNotNull("ShouldNotBeNull", asfp.getSolution().getObjective(1));
+		assertNotNull("Should not be null", asfp.getSolution().getObjective(0));
+		assertNotNull("Should not be null", asfp.getSolution().getObjective(1));
 
 		
 	}
