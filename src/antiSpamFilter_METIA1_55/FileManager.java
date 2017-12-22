@@ -98,7 +98,9 @@ public class FileManager {
 	 * Converte ficheiros em arrays de Strings
 	 * 
 	 * @param file
-	 *            Ficheiro a ser lido.
+	 * Ficheiro a ser lido.
+	 * 
+	 * @return Array com o ficheiro lido.
 	 */
 	public ArrayList<String> read(File file) {
 		fileLines = new ArrayList<String>();

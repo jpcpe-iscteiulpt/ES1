@@ -65,8 +65,9 @@ public class AntiSpamFilterProblem extends AbstractDoubleProblem {
 	}
 
 	/**
-	 * método para determinar o númerop de falsos positivos e falsos negativos
+	 * método para determinar o número de falsos positivos e falsos negativos
 	 * @param solution 
+	 * Solução a avaliar.
 	 */
 	public void evaluate(DoubleSolution solution) {
 		
