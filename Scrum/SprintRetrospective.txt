@@ -1,0 +1,24 @@
+Sprint número 1 (de 26/10/2017 até 23/11/2017)
+
+Em relação à organização da equipa e ao seu desempenho ao executar as tarefas propostas não existe nada de negativo a apontar.
+No entanto, existiu uma dificuldade inicial à adesão às metodologias envolvidas no SCRUM, sendo esse um aspecto que deve ser melhorado nos próximos sprints.
+
+Todas as tarefas que foram propostas para execução no decorrer deste sprint foram concluídas com sucesso.
+
+Sprint número 2 (de 23/11/2017 até 7/12/2017)
+
+Neste sprint, a equipa já se encontrava mais enquadrada com as práticas da metodologia SCRUM, melhorando a dinâmica da equipa.
+
+Quanto às tarefas planeadas para este sprint, ocorreu uma falha entre o tempo para o fim deste sprint e as tarefas que foram alocadas para o mesmo. Tal deve-se
+ao facto de ser necessário fazer 2 sprints de duas semanas de modo a que o último sprint não ultrapassasse a data de entrega do projeto. Poderia ter sido feito 
+apenas um último sprint de 4 semanas, mas a equipa optou por fazer 2 sprints de duas semanas.
+
+Posto isto, no fim do sprint ficou uma funcionalidade por acabar sendo que a mesma vai ser transferida para o próximo sprint. Logo neste caso o aspeto a melhorar
+seria o planeamento de cada sprint no que diz respeito às tarefas que são colocadas no sprint backlog.
+
+Sprint número 3 (de 7/12/2017 até 20/12/2017)
+
+As tarefas planeadas para este sprint ficaram todas concluídas. No entanto, foi utilizada um plugin do eclipse para fazer algumas partes da GUI e alguns nomes de variáveis
+ficaram confusos. No entanto, após a code inspection, os mesmos vão ser modificados.
+Em suma, o grupo trabalha muito bem em equipa e foi bastante produtivo e empenhado durante a totalidade do projeto, sendo isso algo que deveria continuar a fazer.
+
